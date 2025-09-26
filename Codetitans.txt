@@ -1,0 +1,5 @@
+Back-end: Jose Jimenez, Ernesto Urias
+Frond-end: Gladys Pineda
+QA: Josue Rivera
+Scrum Master: Andrea Hernandez
+Product Owner: Francisco Jovel
