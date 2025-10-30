@@ -1,4 +1,4 @@
-Back-end: Jose Jimenez, Ernesto Urias
+Back-end: Jose Jimenez
 Frond-end: Gladys Pineda
 QA: Josue Rivera
 Scrum Master: Andrea Hernandez
