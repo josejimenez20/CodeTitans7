@@ -28,3 +28,10 @@ pnpm-debug.log*
 
 # Certificados (del frontend)
 /frontend/certs/
+.scannerwork/report-task.txt
+.scannerwork/.sonar_lock
+
+# SonarQube scanner files
+.sonar_lock
+report-task.txt
+.scannerwork/
