@@ -1,4 +1,4 @@
-# FLORGAERFRA - Aplicación de Jardines Personalizados (Proyecto CodeTitans7)
+# FLORGAERFRA -  CodeTitans7
 
 FLORGAERFRA es una aplicación web de pila completa diseñada como un asistente inteligente para la jardinería. El propósito principal del proyecto es ayudar a los usuarios a descubrir y seleccionar las plantas que mejor se adapten a su entorno específico, basándose en su ubicación geográfica y preferencias personales.
 
