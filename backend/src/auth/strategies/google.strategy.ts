@@ -29,6 +29,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     try {
       const { id, name, emails, photos } = profile;
 
+      // Arreglamos el nombre 'undefined' y obtenemos la foto
+      const googlePictureUrl = photos[0]?.value;
+      const googleName = `${name.givenName} ${name.familyName || ''}`.trim();
+
       // Buscar usuario por providerId O email
       const userByProvider = await this.usersService.findUserAuth({ 
         providerId: id, 
@@ -55,16 +59,29 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
           provider: 'google',
           providerId: id,
           email: emails[0].value,
-          name: `${name.givenName} ${name.familyName}`.trim(),
-          picture: photos[0]?.value,
-          municipio: defaultMunicipio, // Solo el ID, no el objeto completo
+          name: googleName,
+          picture: googlePictureUrl,
+          municipio: defaultMunicipio, 
           role: 'client',
           password: null,
           isDeleted: false,
         });
 
-      } else if (user.provider !== 'google') {
-        throw new Error('Este email ya está registrado con otro método de autenticación');
+      } else if (user.provider !== 'local' && user.password) {
+        return done(null, {
+          __google_auth_error__: 'El usuario ya existe con otro método de autenticación.',
+        });
+
+      } else {
+        user = await this.usersService.updateUser(
+          { _id: user._id },
+          {
+            provider: 'google',
+            providerId: id,
+            picture: googlePictureUrl, 
+            name: googleName, 
+          },
+        );
       }
 
       done(null, user);
