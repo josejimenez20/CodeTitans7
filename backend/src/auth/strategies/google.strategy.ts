@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20'; // Cambia a oauth20
+import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { MunicipioService } from 'src/municipio/municipio.service';
 import { UsersService } from 'src/users/users.service';
 
@@ -10,7 +10,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
     configService: ConfigService,
     private readonly usersService: UsersService,
-    private readonly municipioService: MunicipioService,
+    // Ya no necesitas 'municipioService' aquí si eliminas la función de abajo
+    private readonly municipioService: MunicipioService, 
   ) {
     super({
       clientID: configService.getOrThrow('GOOGLE_CLIENT_ID'),
@@ -34,62 +35,65 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       const googleName = `${name.givenName} ${name.familyName || ''}`.trim();
 
       // Buscar usuario por providerId O email
-      const userByProvider = await this.usersService.findUserAuth({ 
-        providerId: id, 
-        provider: 'google' 
+      const userByProvider = await this.usersService.findUserAuth({
+        providerId: id,
+        provider: 'google',
       });
 
-      const userByEmail = await this.usersService.findUserAuth({ 
-        email: emails[0].value 
+      const userByEmail = await this.usersService.findUserAuth({
+        email: emails[0].value,
       });
 
       let user = userByProvider || userByEmail;
 
       if (!user) {
+        // --- SECCIÓN PARA CREAR USUARIO NUEVO ---
         
-        // Obtener municipio por defecto
-        const defaultMunicipio = await this.getDefaultMunicipio();
+        // Ya no buscamos un municipio por defecto
         
-        if (!defaultMunicipio) {
-          throw new Error('No se pudo obtener un municipio por defecto');
-        }
-
         // Crear nuevo usuario
         user = await this.usersService.createUser({
           provider: 'google',
           providerId: id,
           email: emails[0].value,
-          name: googleName,
-          picture: googlePictureUrl,
-          municipio: defaultMunicipio, 
+          name: googleName, // <-- Nombre corregido
+          picture: googlePictureUrl, // <-- Foto guardada
+          municipio: null, // <--- ¡AQUÍ ESTÁ EL CAMBIO!
           role: 'client',
           password: null,
           isDeleted: false,
         });
-
-      } else if (user.provider !== 'local' && user.password) {
+      } else if (user.provider === 'local' && user.password) {
+        // El email ya existe con contraseña local.
+        // Devolvemos un objeto simple que SOLO contiene la bandera de error.
         return done(null, {
-          __google_auth_error__: 'El usuario ya existe con otro método de autenticación.',
+          __google_auth_error__:
+            'Este email ya está registrado con email y contraseña.',
         });
-
+        
       } else {
+        // --- ACTUALIZACIÓN DE USUARIO EXISTENTE ---
+        // Actualizamos sus datos por si cambió la foto o el nombre.
         user = await this.usersService.updateUser(
           { _id: user._id },
           {
             provider: 'google',
             providerId: id,
-            picture: googlePictureUrl, 
-            name: googleName, 
+            picture: googlePictureUrl, // <-- Actualiza la foto
+            name: googleName, // <-- Actualiza el nombre
           },
         );
       }
 
+      // Si todo salió bien (crear o actualizar), pasamos el usuario real.
       done(null, user);
     } catch (error) {
       done(error, null);
     }
   }
 
+  // --- ¡DEBES ELIMINAR O COMENTAR ESTA FUNCIÓN! ---
+  /*
   private async getDefaultMunicipio() {
     try {
       const municipios = await this.municipioService.findAll();
@@ -99,4 +103,5 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       throw new Error('No se pudo obtener el municipio por defecto');
     }
   }
+  */
 }

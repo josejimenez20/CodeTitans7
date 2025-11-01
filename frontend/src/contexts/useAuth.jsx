@@ -210,11 +210,6 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  // --- NUEVAS FUNCIONES PARA "PROGRESO DEL JARDÍN" ---
-
-  /**
-   * Obtiene la galería de progreso del usuario.
-   */
   const getProgreso = async () => {
     try {
       const response = await api.get('/progreso');
@@ -271,6 +266,17 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const updateUserMunicipio = async (userId, municipioId) => {
+    try {
+      // Usamos el endpoint que ya existe para actualizar el usuario
+      await api.put(`/users/${userId}`, { municipio: municipioId });
+      // No recargamos datos aquí, el componente que llama lo hará.
+    } catch (error) {
+      console.error('Error updating user municipio:', error);
+      throw error.response?.data || new Error("Error al actualizar la ubicación");
+    }
+  };
+
 
   return (
     <AuthContext.Provider
@@ -292,7 +298,7 @@ export const AuthContextProvider = ({ children }) => {
         forgotPassword, 
         resetPassword,
         updateUserName,
-        // --- AÑADIR NUEVAS FUNCIONES ---
+        updateUserMunicipio,
         getProgreso,
         uploadProgreso,
         deleteProgresoFoto,

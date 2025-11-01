@@ -7,28 +7,32 @@ import { useAuth } from '../contexts/useAuth';
 export default function GoogleCallback() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { setUser, fetchUserData } = useAuth();
+  const { fetchUserData } = useAuth(); 
 
   useEffect(() => {
     const processGoogleCallback = async () => {
       try {
         const accessToken = searchParams.get('accessToken');
         const success = searchParams.get('success');
-
+        // --- ¡AQUÍ CAPTURAMOS EL NUEVO FLAG! ---
+        const isNewUser = searchParams.get('isNewUser') === 'true';
 
         if (accessToken && success === 'true') {
           localStorage.setItem('accessToken', accessToken);
 
           try {
-            await fetchUserData();
-          
-          // eslint-disable-next-line no-unused-vars
+            await fetchUserData(); // Carga los datos del usuario en el contexto
           } catch (error) {
             console.log(error);
           }
-
-          // Redirigir al dashboard
-          navigate('/dashboard', { replace: true });
+          if (isNewUser) {
+            // Si es nuevo, lo mandamos a elegir sus preferencias/ubicación
+            toast.success('¡Bienvenido! Por favor, configura tus preferencias.');
+            navigate('/preferencias', { replace: true });
+          } else {
+            // Si ya existía, lo mandamos al dashboard
+            navigate('/dashboard', { replace: true });
+          }
         } else {
           // Si no hay token, hubo un error
           navigate('/login?error=google_auth_failed');
@@ -40,7 +44,7 @@ export default function GoogleCallback() {
     };
 
     processGoogleCallback();
-  }, [searchParams, navigate, setUser, fetchUserData]);
+  }, [searchParams, navigate, fetchUserData]);
 
   return (
     <div>

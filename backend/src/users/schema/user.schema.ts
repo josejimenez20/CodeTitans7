@@ -14,10 +14,14 @@ export class User {
   
   @Prop({ unique: true })
   email: string;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Municipio', required: true })
+// Referencia al municipio
+  @Prop({ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Municipio', 
+    required: false, 
+    default: null    
+  })
   municipio: Municipio;
-
   @Prop()
   refreshToken?: string;
 
