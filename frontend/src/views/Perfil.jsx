@@ -1,25 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import "../styles/Perfil.css";
-import "../styles/Progreso.css"; // <-- 1. IMPORTAR NUEVO CSS
+import "../styles/Perfil.css"; 
+import "../styles/Progreso.css"; 
 import { useAuth } from "../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
-import toast from 'react-hot-toast'; // (Asumimos que ya lo tienes)
+import toast from 'react-hot-toast'; 
 
-// Componente de Progreso (para mantener Perfil.jsx limpio)
-// Componente de Progreso (para mantener Perfil.jsx limpio)
+// --- Componente ProgresoJardin (Sin cambios en su lógica) ---
 const ProgresoJardin = () => {
-  // 1. Traer la nueva función
   const { getProgreso, uploadProgreso, deleteProgresoFoto, updateFotoPrivacy } = useAuth();
-
-  const [progresoFotos, setProgresoFotos] = useState([]); // Galería
-  // ... (otros estados: selectedFiles, uploadProgress, etc. SIN CAMBIOS)
+  const [progresoFotos, setProgresoFotos] = useState([]); 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [abortController, setAbortController] = useState(null);
   const fileInputRef = useRef(null);
 
-  // ... (useEffect, fetchProgreso, handleFileChange, handleRemovePreview, handleUpload, handleCancelUpload - SIN CAMBIOS)
   useEffect(() => {
     fetchProgreso();
   }, []);
@@ -163,21 +158,17 @@ const ProgresoJardin = () => {
     }
   };
 
-  // --- NUEVA FUNCIÓN AÑADIDA ---
   const handlePrivacyChange = async (e, imageId) => {
     const newPrivacy = e.target.value;
     
-    // Evitar recargar si no hay cambio
     const fotoActual = progresoFotos.find(f => f._id === imageId);
     if (fotoActual.privacy === newPrivacy) return;
 
     const toastId = toast.loading('Actualizando privacidad...');
     try {
-      // Requisito: "Enviar al frontend mensajes claros de éxito o error."
       const response = await updateFotoPrivacy(imageId, newPrivacy);
       toast.success(response.message, { id: toastId });
       
-      // Actualizar el estado local para reflejar el cambio en el dropdown
       setProgresoFotos(prevFotos => 
         prevFotos.map(foto => 
           foto._id === imageId ? { ...foto, privacy: newPrivacy } : foto
@@ -190,14 +181,10 @@ const ProgresoJardin = () => {
   };
 
   return (
-    <section className="progreso-section">
-      <hr />
-      <h3>Progreso del jardín</h3>
-      
-      {/* ... (Botón de subir, input, previsualización, barra de progreso - SIN CAMBIOS) ... */}
+    <section className="progreso-section-wrapper">
        <button 
         type="button" 
-        className="progreso-btn-primary" 
+        className="btn-primary" 
         onClick={() => fileInputRef.current.click()}
         disabled={isUploading}
       >
@@ -231,7 +218,7 @@ const ProgresoJardin = () => {
       {selectedFiles.length > 0 && !isUploading && (
         <button 
           type="button" 
-          className="progreso-btn-primary" 
+          className="btn-primary" 
           style={{ marginTop: '15px' }}
           onClick={handleUpload}
         >
@@ -252,16 +239,13 @@ const ProgresoJardin = () => {
         </div>
       )}
 
-
-      {/* 5. Galería de Fotos Subidas (MODIFICADA) */}
-      <h3 style={{ marginTop: '30px' }}>Mi Galería</h3>
+      <h4 className="progreso-gallery-title">Mi Galería</h4>
       {progresoFotos.length > 0 ? (
         <div className="progreso-gallery">
           {progresoFotos.map((foto) => (
             <div key={foto._id} className="progreso-image-card">
               <img src={foto.url} alt={foto.title || 'Progreso'} />
               
-              {/* --- INICIO DE MODIFICACIÓN (Añadir Dropdown) --- */}
               <div className="progreso-privacy-wrapper">
                 <select 
                   className="progreso-privacy-select"
@@ -273,7 +257,6 @@ const ProgresoJardin = () => {
                   <option value="Público">Público</option>
                 </select>
               </div>
-              {/* --- FIN DE MODIFICACIÓN --- */}
 
               <button 
                 className="progreso-image-delete"
@@ -291,11 +274,19 @@ const ProgresoJardin = () => {
   );
 };
 
-
-// --- COMPONENTE PRINCIPAL (PERFIL) ---
-// (Este componente no se modifica, solo el sub-componente ProgresoJardin)
 export default function Perfil() {
-  const { user, fetchUserData, changePassword, changeEmail, deleteAccount, logout, updateUserPicture, updateUserName } = useAuth();
+  const { 
+    user, 
+    fetchUserData, 
+    changePassword, 
+    changeEmail, 
+    deleteAccount, 
+    logout, 
+    updateUserPicture, 
+    updateUserName,
+    updateUserMunicipio 
+  } = useAuth();
+  
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [newName, setNewName] = useState("");
@@ -480,6 +471,19 @@ export default function Perfil() {
     }
   }
 
+  const handleResetLocation = async () => {
+    if (!user) return;
+    
+    const toastId = toast.loading('Restableciendo ubicación...');
+    try {
+      await updateUserMunicipio(user._id, null);
+      toast.success('Ubicación restablecida. Redirigiendo...', { id: toastId });
+      navigate('/inicio');
+    } catch (error) {
+      toast.error(error.message || "No se pudo restablecer la ubicación.", { id: toastId });
+    }
+  };
+
   const getProfileImage = () => {
     if (user?.pictureMongo?.url) {
       return user.pictureMongo.url;
@@ -492,83 +496,116 @@ export default function Perfil() {
   
   return (
     <div className="perfil-wrapper">
+
       <div className="perfil-card">
-        <a href="/" className="back-home" title="Volver al inicio">
-          <i className="bi bi-door-open-fill"></i>
-        </a>
+        <div className="perfil-content-wrapper">
+          
+      
+          <aside className="perfil-sidebar">
+            <header className="perfil-header">
+              <div className="profile-image-container">
+                <img
+                  src={getProfileImage()}
+                  alt="imagen de perfil"
+                  className="img-perfil"
+                  onClick={handleImageClick}
+                />
+                <div className="image-overlay" onClick={handleImageClick}>
+                  <span>Cambiar</span>
+                </div>
+              </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept="image/*"
+                style={{ display: 'none' }}
+              />
 
-        <header className="perfil-header">
-          <h2>Hola, <span>{newName || user?.name}</span></h2>
-          <div className="profile-image-container">
-            <img
-              src={getProfileImage()}
-              alt="imagen de perfil"
-              className="img-perfil"
-              onClick={handleImageClick}
-            />
-            <div className="image-overlay" onClick={handleImageClick}>
-              <i className="bi bi-camera-fill"></i>
-              <span>Cambiar imagen</span>
-            </div>
-          </div>
+              <h2><span>{newName || user?.name}</span></h2>
+              <p className="email">{user?.email}</p>
+            </header>
 
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            accept="image/*"
-            style={{ display: 'none' }}
-          />
-        </header>
+            <section className="perfil-section">
+              <h3 className="sidebar-title">Ubicación</h3>
+              <div className="formulario" style={{ gap: '10px' }}>
+                <p className="location-text">
+                  Ubicación actual: <strong>{user?.municipio?.name || 'No establecida'}</strong>
+                </p>
+                <button 
+                  type="button" 
+                  className="btn-primary" 
+                  onClick={handleResetLocation}
+                >
+                  Restablecer / Detectar
+                </button>
+              </div>
+            </section>
 
-        <section className="perfil-section">
-          <h3>Cambiar nombre</h3>
-          <form className="formulario" onSubmit={handleChangeName}>
-            <input 
-              type="text" 
-              name="name" 
-              placeholder="Nuevo nombre" 
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              required 
-            />
-            <button type="submit" className="btn-primary">Actualizar nombre</button>
-          </form>
-        </section>
-        
-        <hr />
+            <section className="perfil-section-buttons">
+              <button type="button" className="btn-logout" onClick={() => { logout(); navigate('/') }}>Cerrar sesión</button>
+              <button type="button" className="btn-danger" onClick={handleDelete}>Eliminar cuenta</button>
+            </section>
+          </aside>
 
-        <section className="perfil-section">
-          <h3>Cambiar contraseña</h3>
-          <form className="formulario" onSubmit={handleChangePassword}>
-            <input type="password" name="current_password" placeholder="Contraseña actual" required />
-            <input type="password" name="new_password" placeholder="Nueva contraseña" required minLength={8} />
-            <input type="password" name="confirm_password" placeholder="Confirmar nueva contraseña" required />
-            <button type="submit" className="btn-primary">Actualizar contraseña</button>
-          </form>
-        </section>
+          {/* --- Columna Derecha (Contenido) --- */}
+          <main className="perfil-main-content">
+            
+            <section className="perfil-section">
+              <h3>Progreso del Jardín</h3>
+              <ProgresoJardin />
+            </section>
+            
+            <hr />
 
-        <hr />
+            <section className="perfil-section">
+              <h3>Editar Información</h3>
+              <form className="formulario" onSubmit={handleChangeName}>
+                <label htmlFor="name">Nombre</label>
+                <input 
+                  type="text" 
+                  id="name"
+                  name="name" 
+                  placeholder="Nuevo nombre" 
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  required 
+                />
+                <button type="submit" className="btn-primary">Actualizar nombre</button>
+              </form>
+            </section>
 
-        <section className="perfil-section">
-          <h3>Cambiar correo electrónico</h3>
-          <form className="formulario" onSubmit={handleChangeEmail}>
-            <input type="email" name="email" placeholder="usuario@ejemplo.com" required />
-            <button type="submit" className="btn-primary">Actualizar correo</button>
-          </form>
-        </section>
+            <hr />
 
-        {/* --- INICIO DE SECCIÓN "PROGRESO DEL JARDÍN" --- */}
-        <ProgresoJardin />
-        {/* --- FIN DE SECCIÓN "PROGRESO DEL JARDÍN" --- */}
+            <section className="perfil-section">
+              <h3>Cambiar Contraseña</h3>
+              <form className="formulario" onSubmit={handleChangePassword}>
+                <label htmlFor="current_password">Contraseña actual</label>
+                <input type="password" id="current_password" name="current_password" placeholder="••••••••" required />
+                
+                <label htmlFor="new_password">Nueva contraseña</label>
+                <input type="password" id="new_password" name="new_password" placeholder="••••••••" required minLength={8} />
+                
+                <label htmlFor="confirm_password">Confirmar nueva contraseña</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="••••••••" required />
+                
+                <button type="submit" className="btn-primary">Actualizar contraseña</button>
+              </form>
+            </section>
+            
+            <hr />
 
-        <hr />
+            <section className="perfil-section">
+              <h3>Cambiar Correo Electrónico</h3>
+              <form className="formulario" onSubmit={handleChangeEmail}>
+                <label htmlFor="email">Nuevo correo</label>
+                <input type="email" id="email" name="email" placeholder="usuario@ejemplo.com" required />
+                <button type="submit" className="btn-primary">Actualizar correo</button>
+              </form>
+            </section>
 
-        <section className="perfil-section-buttons">
-          <button type="button" className="btn-danger" onClick={handleDelete}>Eliminar cuenta</button>
-          <button type="button" className="btn-logout" onClick={() => { logout(); navigate('/') }}>Cerrar sesión</button>
-        </section>
-
+          </main>
+        </div>
       </div>
     </div>
   );
