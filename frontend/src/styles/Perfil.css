@@ -221,6 +221,7 @@ button:disabled:hover {
   box-shadow: none;
 }
 
+/* --- ¡CAMBIO DE COLOR! --- */
 /* Botón Primario (Verde Claro) */
 button.btn-primary {
   background-color: #A3B18A; /* ¡Tu verde claro! */
@@ -230,16 +231,6 @@ button.btn-primary {
 button.btn-primary:hover {
   background-color: #8a9a73; /* Verde más oscuro */
 }
-
-/* Botón Verde (para ubicación) - usa la misma clase */
-button.btn-green {
-  background-color: #A3B18A; 
-  color: #fff;
-}
-button.btn-green:hover {
-  background-color: #8a9a73;
-}
-/* ------------------------------------ */
 
 /* --- ¡AQUÍ ESTÁ LA CORRECCIÓN! --- */
 /* Botones de acción en Sidebar */

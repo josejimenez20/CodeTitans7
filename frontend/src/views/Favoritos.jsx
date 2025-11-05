@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Favoritos.css";
 import { useAuth } from "../contexts/useAuth";
 import api from "../shared/api";
-import toast from 'react-hot-toast'; // <-- IMPORTAR TOAST
+import toast from 'react-hot-toast'; 
 
 export default function Favoritos() {
   const { user, fetchUserData } = useAuth();
@@ -24,7 +24,7 @@ export default function Favoritos() {
 
   const eliminarFavorito = async (plantaId) => {
     if (!user) {
-      toast.error("Debes iniciar sesión para eliminar favoritos."); // <-- Reemplazado
+      toast.error("Debes iniciar sesión para eliminar favoritos."); 
       return;
     }
     
@@ -34,14 +34,14 @@ export default function Favoritos() {
         data: { userId: user._id, plantaId: plantaId },
       });
       if (response) {
-        toast.success('Planta eliminada de favoritos.', { id: toastId }); // <-- Toast de éxito
+        toast.success('Planta eliminada de favoritos.', { id: toastId }); 
         fetchUserData(); 
       } else {
-        toast.error("No se pudo eliminar de favoritos.", { id: toastId }); // <-- Reemplazado
+        toast.error("No se pudo eliminar de favoritos.", { id: toastId }); 
       }
     } catch (error) {
       console.error("Error al eliminar favorito:", error);
-      toast.error("Hubo un problema al eliminar.", { id: toastId }); // <-- Reemplazado
+      toast.error("Hubo un problema al eliminar.", { id: toastId }); 
     }
   };
   
@@ -59,10 +59,13 @@ export default function Favoritos() {
           <div className="plant-card" key={planta._id}>
             <div 
               className="plant-image" 
-              onClick={() => verDetalle(planta.id)} 
+              onClick={() => verDetalle(planta._id)} // <-- Corregido
               style={{ cursor: "pointer" }}
             >
-              <img src={planta.imagen.url} alt={planta.nombre} />
+              <img 
+                src={planta.imagen?.url || "/default-avatar.png"} 
+                alt={planta.nombre} 
+              />
             </div>
             <div 
               className="plant-info" 

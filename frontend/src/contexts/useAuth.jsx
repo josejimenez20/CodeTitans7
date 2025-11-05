@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useCallback } from "react"; // <-- IMPORTAR useCallback
 import api from "../shared/api";
 
 const AuthContext = createContext(undefined);
@@ -7,7 +7,8 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUserData = async () => {
+  // --- INICIO DE CORRECCIÓN (Estabilizar funciones) ---
+  const fetchUserData = useCallback(async () => {
     try {
       const response = await api.get("/users/me");
       const data = response.data;
@@ -18,43 +19,54 @@ export const AuthContextProvider = ({ children }) => {
       localStorage.setItem("currentUser", JSON.stringify(data));
     } catch (error) {
       console.error("Fetch user data error:", error);
+      // No limpiar el usuario si ya existe
+      if (!localStorage.getItem("currentUser")) {
+        setUser(null);
+      }
     }
-  };
+  }, []); // Array de dependencias vacío
 
-  const updateUserPicture = async (file, userId) => {
+  const updateUserMunicipio = useCallback(async (userId, municipioId) => {
+    try {
+      await api.put(`/users/${userId}`, { municipio: municipioId });
+      // ¡Importante! Llamamos a la versión estable de fetchUserData
+      await fetchUserData(); 
+    } catch (error) {
+      console.error('Error updating user municipio:', error);
+      throw error.response?.data || new Error("Error al actualizar la ubicación");
+    }
+  }, [fetchUserData]); // Depende de fetchUserData
+  // --- FIN DE CORRECCIÓN ---
+
+
+  const updateUserPicture = useCallback(async (file, userId) => {
     try {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await api.put(`/users/${userId}`, formData, {
+      await api.put(`/users/${userId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      if (response.data) {
-        setUser(response.data);
-        localStorage.setItem('currentUser', JSON.stringify(response.data));
-      }
-
-      return response.data;
+      // Llamamos a la versión estable para recargar
+      await fetchUserData();
     } catch (error) {
       console.error('Error updating profile picture:', error);
       throw error;
     }
-  }
+  }, [fetchUserData]); // Depende de fetchUserData
 
   const loginGoogle = async () => {
     const googleAuthUrl = 'http://localhost:3000/auth/google';
     window.location.href = googleAuthUrl;
   };
 
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => { // <-- También estabilizado
     try {
       const token = localStorage.getItem('accessToken');
       if (token) {
-        const response = await api.get('/users/me'); 
-        setUser(response.data);
+        await fetchUserData(); // Usamos la función estable
       }
     } catch (error) {
       console.error('Error verificando autenticación:', error);
@@ -62,7 +74,7 @@ export const AuthContextProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [fetchUserData]);
 
   const login = async (userData) => {
     try {
@@ -73,14 +85,9 @@ export const AuthContextProvider = ({ children }) => {
         throw new Error("Login failed");
       }
 
-      const userResponse = await api.get("/users/me");
-      const userDataResponse = userResponse.data;
-      if (userDataResponse.error) {
-        throw new Error("Failed to fetch user data");
-      }
-      localStorage.setItem("currentUser", JSON.stringify(userDataResponse));
-      setUser(userDataResponse);
-      return userDataResponse;
+      await fetchUserData(); // Usamos la función estable
+      const updatedUser = JSON.parse(localStorage.getItem("currentUser"));
+      return updatedUser;
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -126,15 +133,15 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
   
-  const updateUserName = async (userId, newName) => {
+  const updateUserName = useCallback(async (userId, newName) => {
     try {
       await api.put(`/users/${userId}`, { name: newName });
-      await fetchUserData(); // Recargamos datos para mantener la foto
+      await fetchUserData(); 
     } catch (error) {
       console.error('Error updating user name:', error);
       throw error.response?.data || new Error("Error al actualizar el nombre");
     }
-  };
+  }, [fetchUserData]);
 
   const deleteAccount = async (id) => {
     try {
@@ -172,15 +179,9 @@ export const AuthContextProvider = ({ children }) => {
         throw new Error("Login failed");
       }
 
-      const userResponse = await api.get("/users/me");
-      const userDataResponse = userResponse.data;
-      if (userDataResponse.error) {
-        throw new Error("Failed to fetch user data");
-      }
-      setUser(userDataResponse);
-      localStorage.setItem("currentUser", JSON.stringify(userDataResponse));
-      localStorage.removeItem("idLoginStepOne");
-      return userDataResponse;
+      await fetchUserData(); // Usamos la función estable
+      const updatedUser = JSON.parse(localStorage.getItem("currentUser"));
+      return updatedUser;
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -210,40 +211,34 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  const getProgreso = async () => {
+  // --- Funciones de Progreso (envueltas también) ---
+  const getProgreso = useCallback(async () => {
     try {
       const response = await api.get('/progreso');
-      return response.data.images || []; // Devuelve el array de imágenes
+      return response.data.images || [];
     } catch (error) {
       console.error("Error obteniendo progreso:", error);
       throw error.response?.data || new Error("Error al cargar el progreso");
     }
-  };
+  }, []);
 
-  /**
-   * Sube fotos de progreso.
-   * onUploadProgress es una función callback para la barra de progreso.
-   */
-  const uploadProgreso = async (formData, onUploadProgress, cancelSignal) => {
+  const uploadProgreso = useCallback(async (formData, onUploadProgress, cancelSignal) => {
     try {
       const response = await api.post('/progreso/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        onUploadProgress, // Pasa el callback a axios
-        signal: cancelSignal, // Pasa la señal de cancelación
+        onUploadProgress,
+        signal: cancelSignal,
       });
       return response.data;
     } catch (error) {
       console.error("Error subiendo fotos:", error);
       throw error.response?.data || new Error("Error al subir fotos");
     }
-  };
+  }, []);
 
-  /**
-   * Elimina una foto de progreso específica.
-   */
-  const deleteProgresoFoto = async (imageId) => {
+  const deleteProgresoFoto = useCallback(async (imageId) => {
     try {
       const response = await api.delete(`/progreso/image/${imageId}`);
       return response.data;
@@ -251,37 +246,26 @@ export const AuthContextProvider = ({ children }) => {
       console.error("Error eliminando foto:", error);
       throw error.response?.data || new Error("Error al eliminar la foto");
     }
-  };
+  }, []);
 
-  // --- NUEVA FUNCIÓN AÑADIDA ---
-  const updateFotoPrivacy = async (imageId, newPrivacy) => {
+  const updateFotoPrivacy = useCallback(async (imageId, newPrivacy) => {
     try {
       const response = await api.patch(`/progreso/image/${imageId}/privacy`, {
         privacy: newPrivacy,
       });
-      return response.data; // { message: 'Privacidad actualizada correctamente' }
+      return response.data;
     } catch (error) {
       console.error("Error actualizando privacidad:", error);
       throw error.response?.data || new Error("Error al actualizar la privacidad");
     }
-  };
-
-  const updateUserMunicipio = async (userId, municipioId) => {
-    try {
-      // Usamos el endpoint que ya existe para actualizar el usuario
-      await api.put(`/users/${userId}`, { municipio: municipioId });
-      // No recargamos datos aquí, el componente que llama lo hará.
-    } catch (error) {
-      console.error('Error updating user municipio:', error);
-      throw error.response?.data || new Error("Error al actualizar la ubicación");
-    }
-  };
+  }, []);
 
 
   return (
     <AuthContext.Provider
       value={{
         user,
+        loading,
         login,
         register,
         logout,
@@ -293,7 +277,6 @@ export const AuthContextProvider = ({ children }) => {
         loginStepTwo,
         loginGoogle,
         checkAuth,
-        loading,
         updateUserPicture,
         forgotPassword, 
         resetPassword,
@@ -302,6 +285,7 @@ export const AuthContextProvider = ({ children }) => {
         getProgreso,
         uploadProgreso,
         deleteProgresoFoto,
+        updateFotoPrivacy
       }}
     >
       {children}

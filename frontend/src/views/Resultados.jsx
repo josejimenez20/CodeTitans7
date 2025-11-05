@@ -5,7 +5,7 @@ import { usePlanta } from "../contexts/usePlanta";
 import { HeartFilledIcon, HeartIcon } from "../components/icons/Icons";
 import { useAuth } from "../contexts/useAuth";
 import api from "../shared/api";
-import toast from 'react-hot-toast'; // <-- IMPORTAR TOAST
+import toast from 'react-hot-toast'; 
 
 export default function Resultados() {
   const { user, fetchUserData } = useAuth();
@@ -13,12 +13,20 @@ export default function Resultados() {
   const { filterPlanta, filterPlant } = usePlanta();
   const [searchParams] = useSearchParams();
 
-  const filters = {
-    frecuencia_agua: searchParams.get("frecuencia_agua") || "",
-    tipo_suelo: searchParams.get("tipo_suelo") || "",
-    exposicion_luz: searchParams.get("exposicion_luz") || "",
-    tamano_espacio: searchParams.get("tamano_espacio") || "",
-  };
+  // --- ¡CORRECCIÓN DE LÓGICA! ---
+  // El filtro debe leer 'municipio_id' si viene, 
+  // o los otros filtros si no.
+  const municipioId = searchParams.get("municipio_id");
+  
+  const filters = municipioId 
+    ? { municipio_id: municipioId }
+    : {
+        frecuencia_agua: searchParams.get("frecuencia_agua") || "",
+        tipo_suelo: searchParams.get("tipo_suelo") || "",
+        exposicion_luz: searchParams.get("exposicion_luz") || "",
+        tamano_espacio: searchParams.get("tamano_espacio") || "",
+      };
+  // --- FIN DE CORRECCIÓN ---
 
   useEffect(() => {
     if (user === null) {
@@ -26,16 +34,15 @@ export default function Resultados() {
     }
     filterPlant(filters); 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams,]);
+  }, [searchParams, user]); // Añadimos 'user' por si acaso
 
 
   const agregarFavorito = async (plantaId) => {
     if (!user) {
-      toast.error("Debes iniciar sesión para agregar favoritos."); // <-- Reemplazado
+      toast.error("Debes iniciar sesión para agregar favoritos."); 
       return;
     }
     
-    // No mostramos toast de carga aquí, es muy rápido
     try {
       const response = await api.post("/favoritas", {
         userId: user._id,
@@ -43,17 +50,17 @@ export default function Resultados() {
       });
       if (response) {
         if (response.data.message === 'La planta ya está en favoritos') {
-          toast('Esta planta ya estaba en tus favoritos.'); // <-- Notificación
+          toast('Esta planta ya estaba en tus favoritos.'); 
         } else {
-          toast.success('Añadida a favoritos.'); // <-- Toast de éxito
+          toast.success('Añadida a favoritos.'); 
         }
         fetchUserData();
       } else {
-        toast.error("No se pudo agregar a favoritos."); // <-- Reemplazado
+        toast.error("No se pudo agregar a favoritos."); 
       }
     } catch (error) {
       console.error("Error al agregar favorito:", error);
-      toast.error("Hubo un problema al agregar a favoritos."); // <-- Reemplazado
+      toast.error("Hubo un problema al agregar a favoritos."); 
     }
   };
 
@@ -93,7 +100,8 @@ export default function Resultados() {
               style={{ cursor: "pointer" }}
             >
               <img
-                src={planta.imagen.url}
+                // --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
+                src={planta.imagen?.url || "/default-avatar.png"}
                 alt={planta.nombre}
                 width="300"
                 height="160"

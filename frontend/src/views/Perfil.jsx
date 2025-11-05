@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast'; 
 
-// --- Componente ProgresoJardin (Sin cambios en su lógica) ---
+// --- Componente ProgresoJardin (CON EL CAMBIO) ---
 const ProgresoJardin = () => {
   const { getProgreso, uploadProgreso, deleteProgresoFoto, updateFotoPrivacy } = useAuth();
   const [progresoFotos, setProgresoFotos] = useState([]); 
@@ -184,7 +184,7 @@ const ProgresoJardin = () => {
     <section className="progreso-section-wrapper">
        <button 
         type="button" 
-        className="btn-primary" 
+        className="btn-primary" // <-- ¡AQUÍ ESTÁ CORREGIDO!
         onClick={() => fileInputRef.current.click()}
         disabled={isUploading}
       >
@@ -218,7 +218,7 @@ const ProgresoJardin = () => {
       {selectedFiles.length > 0 && !isUploading && (
         <button 
           type="button" 
-          className="btn-primary" 
+          className="btn-primary" // <-- ¡AQUÍ ESTÁ CORREGIDO!
           style={{ marginTop: '15px' }}
           onClick={handleUpload}
         >
@@ -274,6 +274,8 @@ const ProgresoJardin = () => {
   );
 };
 
+
+// --- COMPONENTE PRINCIPAL (PERFIL) ---
 export default function Perfil() {
   const { 
     user, 
@@ -496,11 +498,12 @@ export default function Perfil() {
   
   return (
     <div className="perfil-wrapper">
+      {/* --- BOTÓN 'back-home' ELIMINADO --- */}
 
       <div className="perfil-card">
         <div className="perfil-content-wrapper">
           
-      
+          {/* --- Columna Izquierda (Sidebar) --- */}
           <aside className="perfil-sidebar">
             <header className="perfil-header">
               <div className="profile-image-container">
@@ -532,9 +535,10 @@ export default function Perfil() {
                 <p className="location-text">
                   Ubicación actual: <strong>{user?.municipio?.name || 'No establecida'}</strong>
                 </p>
+                {/* --- BOTÓN DE UBICACIÓN USA btn-primary --- */}
                 <button 
                   type="button" 
-                  className="btn-primary" 
+                  className="btn-primary" // Usamos la clase verde principal
                   onClick={handleResetLocation}
                 >
                   Restablecer / Detectar

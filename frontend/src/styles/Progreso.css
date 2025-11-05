@@ -1,58 +1,12 @@
 /*
   Estilos para la sección "Progreso del Jardín"
-  Basado en las especificaciones de Azure (Tipografía Arial, colores específicos)
+  Versión LIMPIA - Sin estilos de botones
 */
 
 /* Contenedor de la sección */
-.progreso-section {
+.progreso-section-wrapper {
   font-family: Arial, sans-serif;
   color: #212529;
-}
-
-/* Título de la sección (se hereda de .formulario h3 en Perfil.css) */
-.progreso-section h3 {
-  font-family: Arial, sans-serif;
-  font-size: 20px;
-  margin: 10px 0 6px;
-  color: #5c4033; /* Heredado de Perfil.css */
-  font-weight: bold;
-}
-
-/* Botón principal de subida */
-.progreso-btn-primary {
-  background: #28A745;
-  color: #FFFFFF;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 8px;
-  width: 100%;
-  height: 45px;
-  border: none;
-  cursor: pointer;
-  padding: 0.6em 1.2em; /* Padding de fallback */
-  transition: background-color 0.2s;
-}
-
-.progreso-btn-primary:hover {
-  background: #286735;
-}
-
-/* Botón secundario (Gris) - Para Eliminar */
-.progreso-btn-secondary {
-  background: #6C757D;
-  color: #FFFFFF;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  padding: 6px 12px;
-  transition: background-color 0.2s;
-}
-
-.progreso-btn-secondary:hover {
-  background: #5a6268;
 }
 
 /* Input de archivo oculto */
@@ -61,7 +15,6 @@
 }
 
 /* --- Área de Previsualización --- */
-
 .progreso-preview-area {
   margin-top: 20px;
   display: grid;
@@ -102,7 +55,6 @@
 }
 
 /* --- Barra de Progreso --- */
-
 .progreso-upload-wrapper {
   margin-top: 15px;
   display: flex;
@@ -121,19 +73,16 @@
   border: 1px solid #A0A7B0;
 }
 
-/* Estilo para Chrome/Safari */
 .progreso-upload-bar::-webkit-progress-bar {
   background-color: #f0f0f0;
   border-radius: 8px;
 }
 .progreso-upload-bar::-webkit-progress-value {
-  background-color: #007BFF; /* Color Azul de progreso */
+  background-color: #A3B18A; /* Usamos tu color verde claro */
   transition: width 0.3s ease;
 }
-
-/* Estilo para Firefox */
 .progreso-upload-bar::-moz-progress-bar {
-  background-color: #007BFF;
+  background-color: #A3B18A; /* Usamos tu color verde claro */
   border-radius: 8px;
   transition: width 0.3s ease;
 }
@@ -157,9 +106,8 @@
 }
 
 /* --- Galería de Progreso (Fotos ya subidas) --- */
-
 .progreso-gallery {
-  margin-top: 20px;
+  margin-top: 0; /* El título ya tiene margen */
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 15px;
@@ -169,7 +117,8 @@
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
   height: 150px;
 }
 
@@ -179,16 +128,14 @@
   object-fit: cover;
 }
 
-/* Botón 'Eliminar' sobre la imagen de la galería */
 .progreso-image-delete {
   position: absolute;
   top: 5px;
   right: 5px;
-  /* Reutiliza el estilo del botón secundario */
   background: #6C757D;
   color: #FFFFFF;
   font-family: Arial, sans-serif;
-  font-size: 12px; /* Más pequeño para la tarjeta */
+  font-size: 12px; 
   border-radius: 6px;
   border: none;
   cursor: pointer;
@@ -196,11 +143,9 @@
   transition: background-color 0.2s;
   opacity: 0.8;
 }
-
 .progreso-image-card:hover .progreso-image-delete {
   opacity: 1;
 }
-
 .progreso-image-delete:hover {
   background: #5a6268;
 }
@@ -213,10 +158,7 @@
   margin-top: 20px;
 }
 
-/* ... (todos los estilos existentes de Progreso.css) ... */
-
-/* --- NUEVOS ESTILOS PARA PRIVACIDAD --- */
-
+/* --- Estilos de Privacidad --- */
 .progreso-privacy-wrapper {
   position: absolute;
   bottom: 5px;
@@ -228,7 +170,7 @@
 
 .progreso-privacy-select {
   font-family: Arial, sans-serif;
-  font-size: 12px; /* Reducido para que quepa en la tarjeta */
+  font-size: 12px; 
   color: #212529;
   background-color: rgba(255, 255, 255, 0.9);
   border: 1px solid #A0A7B0;
@@ -239,12 +181,4 @@
 
 .progreso-image-card:hover .progreso-privacy-wrapper {
   opacity: 1;
-}
-
-/* Modificamos el botón de eliminar para que esté a la derecha */
-.progreso-image-delete {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  /* ... (estilos existentes del botón) ... */
 }

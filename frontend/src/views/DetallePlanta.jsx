@@ -29,12 +29,11 @@ export default function DetallePlanta() {
     fetchPlanta();
   }, [id, obtenerPlanta]);
 
-  // Protege el componente si planta no está disponible
   if (!planta) {
     return (
       <main style={{ padding: "40px 20px", textAlign: "center", color: "#7F5539" }}>
-        <h2>Selecciona una planta para ver sus detalles</h2>
-        <p>No se encontró información de la planta.</p>
+        <h2>Cargando...</h2>
+        <p>Buscando información de la planta.</p>
       </main>
     );
   }
@@ -42,7 +41,11 @@ export default function DetallePlanta() {
   return (
     <main className="detalle-planta-container">
       <div className="imagen-planta">
-        <img src={planta.imagen.url} alt={planta.nombre} />
+        <img 
+          // --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
+          src={planta.imagen?.url || "/default-avatar.png"} 
+          alt={planta.nombre} 
+        />
         <div className="recomendaciones">
           <h4>¿Por qué te la recomendamos?</h4>
           <ul>

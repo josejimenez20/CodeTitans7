@@ -2,10 +2,10 @@
 import { useNavigate, createSearchParams } from "react-router-dom";
 import "../styles/Inicio.css";
 import { useAuth } from "../contexts/useAuth";
-import { useEffect, useState, useCallback } from "react"; // <-- IMPORTANTE: Importar useCallback
+import { useEffect, useState, useCallback, useRef } from "react"; 
 import { usePlanta } from "../contexts/usePlanta";
-import toast from 'react-hot-toast';
-import api from "../shared/api";
+import toast from 'react-hot-toast'; 
+import api from "../shared/api";       
 
 export default function Inicio() {
   const { user, fetchUserData, updateUserMunicipio } = useAuth();
@@ -13,14 +13,10 @@ export default function Inicio() {
   const navigate = useNavigate();
   
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
-  // --- INICIO DE LA CORRECCIÓN ---
-  // 1. Añadimos el "seguro" (latch) para evitar el bucle
-  const [locationCheckStarted, setLocationCheckStarted] = useState(false);
-  // --- FIN DE LA CORRECCIÓN ---
+  // Usamos useRef para el "seguro" (latch), esto sobrevive a los re-renders de StrictMode
+  const locationCheckStarted = useRef(false);
 
-
-  // --- LÓGICA DE GEOLOCALIZACIÓN ---
-  // (Envolvemos las funciones en useCallback para estabilizarlas)
+  // --- LÓGICA DE GEOLOCALIZACIÓN (Más robusta) ---
 
   const handleLocationError = useCallback((error, toastId) => {
     setIsLoadingLocation(false);
@@ -28,49 +24,72 @@ export default function Inicio() {
     if (error.code === error.PERMISSION_DENIED) {
       message = "Permiso de ubicación denegado. Selecciona manualmente.";
     }
-    // Solo actualiza el toast de "cargando", no crea uno nuevo
     toast.error(message, { id: toastId, duration: 4000 });
-  }, []); // Sin dependencias
+  }, []); 
 
   const handleLocationSuccess = useCallback(async (position, toastId) => {
     const { latitude, longitude } = position.coords;
     try {
       toast.loading("Ubicación encontrada. Verificando municipio...", { id: toastId });
       
+      // 1. Obtenemos NUESTRA lista de municipios PRIMERO
+      const municipiosResponse = await api.get("/municipio");
+      if (!municipiosResponse.data || municipiosResponse.data.length === 0) {
+        throw new Error("No se pudo cargar la lista de municipios desde la base de datos.");
+      }
+      
+      // 2. Creamos un Set (mapa) para búsqueda rápida
+      const municipiosMap = new Map();
+      municipiosResponse.data.forEach(m => {
+        municipiosMap.set(m.name.toLowerCase(), m);
+      });
+
+      // 3. Obtenemos los datos de geolocalización
       const geoResponse = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
       );
       if (!geoResponse.ok) throw new Error("Error al consultar el servicio de ubicación.");
       
       const geoData = await geoResponse.json();
-      const geoMunicipioName = geoData.address.city || geoData.address.town || geoData.address.village;
+      const address = geoData.address || {};
 
-      if (!geoMunicipioName) {
-        throw new Error("No se pudo determinar un municipio desde tu ubicación.");
+      // 4. Buscamos una coincidencia en CUALQUIER campo de la dirección
+      let matchedMunicipio = null;
+      
+      // Lista de campos de Nominatim en orden de prioridad
+      const fieldsToSearch = ['city', 'town', 'village', 'county', 'state_district', 'suburb', 'state'];
+      let foundGeoName = null;
+      
+      for (const field of fieldsToSearch) {
+        const geoName = address[field];
+        if (geoName) {
+          const cleanGeoName = geoName.replace(/^(Municipio de|Departamento de)\s/i, "").trim().toLowerCase();
+          
+          if (municipiosMap.has(cleanGeoName)) {
+            matchedMunicipio = municipiosMap.get(cleanGeoName);
+            foundGeoName = address[field];
+            break; 
+          }
+        }
       }
-
-      const municipiosResponse = await api.get("/municipio");
-      const matchedMunicipio = municipiosResponse.data.find(
-        (m) => m.name.toLowerCase() === geoMunicipioName.toLowerCase()
-      );
-
+      
+      // 5. Verificamos si encontramos una coincidencia
       if (matchedMunicipio) {
-        // user._id está disponible porque este 'handler' solo se llama si 'user' existe
         await updateUserMunicipio(user._id, matchedMunicipio._id);
         toast.success(`¡Ubicación guardada: ${matchedMunicipio.name}!`, { id: toastId, duration: 4000 });
-        // fetchUserData() se llama automáticamente desde updateUserMunicipio en el contexto
       } else {
-        throw new Error(`Tu ubicación (${geoMunicipioName}) no está en nuestra base de datos. Ajusta manualmente.`);
+        console.error("No se encontró coincidencia. Respuesta de Nominatim:", address);
+        throw new Error(`Tu ubicación (${foundGeoName || 'desconocida'}) no coincide con un municipio de nuestra base de datos. Ajusta manualmente.`);
       }
+      // --- FIN DE CORRECCIÓN ---
 
     } catch (error) {
-      // Actualiza el toast de "cargando" con el mensaje de error
       toast.error(error.message, { id: toastId, duration: 4000 });
     } finally {
       setIsLoadingLocation(false);
     }
-  }, [user, updateUserMunicipio]); // Depende de estas props/contexto
-
+  }, [user, updateUserMunicipio]); 
+  
   const findUserLocation = useCallback(() => {
     if (!navigator.geolocation) {
       toast.error("Tu navegador no soporta geolocalización. Ajusta tus filtros manualmente.");
@@ -85,8 +104,6 @@ export default function Inicio() {
     );
   }, [handleLocationSuccess, handleLocationError]);
 
-  // --- FIN LÓGICA DE GEOLOCALIZACIÓN ---
-
 
   // --- useEffect MODIFICADO CON EL "SEGURO" ---
   useEffect(() => {
@@ -97,16 +114,13 @@ export default function Inicio() {
     }
 
     // 2. Si el usuario existe, no tiene municipio, Y NO hemos empezado la búsqueda...
-    if (user && !user.municipio && !locationCheckStarted) {
+    if (user && !user.municipio && !locationCheckStarted.current) {
       // ...entonces activamos el "seguro" y empezamos la búsqueda.
-      setLocationCheckStarted(true);
+      locationCheckStarted.current = true;
       findUserLocation();
     }
     
-    // 3. El 'eslint-disable' es necesario porque 'fetchUserData' y 'findUserLocation'
-    // no están envueltas en useCallback en su origen (AuthContext) o aquí,
-    // pero nuestro "seguro" (locationCheckStarted) previene el bucle.
-  }, [user, locationCheckStarted]); 
+  }, [user, fetchUserData, findUserLocation]); 
   // --- FIN useEffect MODIFICADO ---
 
 
@@ -118,9 +132,7 @@ export default function Inicio() {
     }
     
     const filter = {
-      tipo_suelo: user.municipio.tipo_suelo || "",
-      frecuencia_agua: user.municipio.frecuencia_agua || "",
-      exposicion_luz: user.municipio.exposicion_luz || "",
+      municipio_id: user.municipio._id,
     };
 
     filterPlant(filter);
