@@ -184,7 +184,7 @@ const ProgresoJardin = () => {
     <section className="progreso-section-wrapper">
        <button 
         type="button" 
-        className="btn-primary" // <-- ¡AQUÍ ESTÁ CORREGIDO!
+        className="btn-primary"
         onClick={() => fileInputRef.current.click()}
         disabled={isUploading}
       >
@@ -218,7 +218,7 @@ const ProgresoJardin = () => {
       {selectedFiles.length > 0 && !isUploading && (
         <button 
           type="button" 
-          className="btn-primary" // <-- ¡AQUÍ ESTÁ CORREGIDO!
+          className="btn-primary"
           style={{ marginTop: '15px' }}
           onClick={handleUpload}
         >
@@ -292,6 +292,9 @@ export default function Perfil() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [newName, setNewName] = useState("");
+  const [notifications, setNotifications] = useState({
+    emailRespuesta: false
+  });
 
   useEffect(()=> {
     if(!user){
@@ -404,6 +407,36 @@ export default function Perfil() {
     }
   }
 
+  const handleNotificationChange = (key, value) => {
+    setNotifications(prev => ({
+      ...prev,
+      [key]: value
+    }));
+    
+    // Mostrar mensaje de guardado
+    toast((t) => (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        fontFamily: 'Arial, sans-serif',
+      }}>
+        <span>✓ Configuración guardada.</span>
+      </div>
+    ), {
+      duration: 3000,
+      style: {
+        background: '#D4EDDA',
+        color: '#155724',
+        border: '1px solid #C3E6CB',
+        padding: '12px 16px',
+        borderRadius: '8px',
+        fontSize: '14px',
+        fontFamily: 'Arial, sans-serif',
+      }
+    });
+  };
+
   const handleDelete = async() => {
     toast((t) => (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
@@ -498,12 +531,9 @@ export default function Perfil() {
   
   return (
     <div className="perfil-wrapper">
-      {/* --- BOTÓN 'back-home' ELIMINADO --- */}
-
       <div className="perfil-card">
         <div className="perfil-content-wrapper">
           
-          {/* --- Columna Izquierda (Sidebar) --- */}
           <aside className="perfil-sidebar">
             <header className="perfil-header">
               <div className="profile-image-container">
@@ -535,10 +565,9 @@ export default function Perfil() {
                 <p className="location-text">
                   Ubicación actual: <strong>{user?.municipio?.name || 'No establecida'}</strong>
                 </p>
-                {/* --- BOTÓN DE UBICACIÓN USA btn-primary --- */}
                 <button 
                   type="button" 
-                  className="btn-primary" // Usamos la clase verde principal
+                  className="btn-primary"
                   onClick={handleResetLocation}
                 >
                   Restablecer / Detectar
@@ -552,7 +581,6 @@ export default function Perfil() {
             </section>
           </aside>
 
-          {/* --- Columna Derecha (Contenido) --- */}
           <main className="perfil-main-content">
             
             <section className="perfil-section">
@@ -606,6 +634,30 @@ export default function Perfil() {
                 <input type="email" id="email" name="email" placeholder="usuario@ejemplo.com" required />
                 <button type="submit" className="btn-primary">Actualizar correo</button>
               </form>
+            </section>
+
+            <hr />
+
+            <section className="perfil-section">
+              <h3 className="notificaciones-title">Notificaciones por Correo</h3>
+              
+              <div className="notificaciones-container">
+                <div className="notificacion-item">
+                  <div className="notificacion-content">
+                    <label className="notificacion-label">Recibir un email cuando alguien responda</label>
+                  </div>
+                  <div className="notificacion-control">
+                    <input 
+                      type="checkbox" 
+                      id="email-respuesta"
+                      className="toggle-checkbox"
+                      checked={notifications.emailRespuesta}
+                      onChange={(e) => handleNotificationChange('emailRespuesta', e.target.checked)}
+                    />
+                    <label htmlFor="email-respuesta" className="toggle-label"></label>
+                  </div>
+                </div>
+              </div>
             </section>
 
           </main>

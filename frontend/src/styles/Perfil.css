@@ -221,10 +221,9 @@ button:disabled:hover {
   box-shadow: none;
 }
 
-/* --- ¡CAMBIO DE COLOR! --- */
 /* Botón Primario (Verde Claro) */
 button.btn-primary {
-  background-color: #A3B18A; /* ¡Tu verde claro! */
+  background-color: #A3B18A; /* Verde claro */
   color: #fff;
   margin-top: 8px; 
 }
@@ -232,10 +231,8 @@ button.btn-primary:hover {
   background-color: #8a9a73; /* Verde más oscuro */
 }
 
-/* --- ¡AQUÍ ESTÁ LA CORRECCIÓN! --- */
 /* Botones de acción en Sidebar */
 .perfil-section-buttons {
-  /* Eliminamos margin-top: auto, flex-grow, y justify-content */
   padding-top: 0;
   display: flex;
   flex-direction: column; 
@@ -260,10 +257,8 @@ button.btn-primary:hover {
 .btn-logout:hover {
   background-color: #5a6268;
 }
-/* --- FIN DE LA CORRECCIÓN --- */
 
-
-/* --- Separadores y Botón de Volver --- */
+/* --- Separadores --- */
 hr {
   border: none;
   border-top: 1px solid #f0f0f0;
@@ -274,12 +269,7 @@ hr {
   display: none;
 }
 
-/* ¡CAMBIO! Botón "back-home" ELIMINADO */
-.back-home {
-  display: none;
-}
-
-/* --- Estilos del Progreso (Mejorados) --- */
+/* --- Estilos del Progreso --- */
 .progreso-section-wrapper {
   background-color: #fdfdfd;
   border: 1px solid #f0f0f0;
@@ -297,10 +287,102 @@ hr {
   border-bottom: 1px solid #eee;
 }
 
+/* --- ESTILOS DE NOTIFICACIONES POR CORREO --- */
+.notificaciones-title {
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  color: #333333;
+}
+
+.notificaciones-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notificacion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: #fdfdfd;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.notificacion-item:hover {
+  background-color: #fffbf5;
+  border-color: #e8e8e8;
+}
+
+.notificacion-content {
+  flex: 1;
+}
+
+.notificacion-label {
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  color: #555555;
+  margin: 0;
+  cursor: pointer;
+  display: block;
+}
+
+.notificacion-control {
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+}
+
+/* Toggle Checkbox Estilo Interruptor */
+.toggle-checkbox {
+  display: none;
+}
+
+.toggle-label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  width: 50px;
+  height: 26px;
+  background-color: #ccc;
+  border-radius: 13px;
+  position: relative;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.toggle-label::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background-color: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: left 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #4CAF50;
+}
+
+.toggle-checkbox:checked + .toggle-label::after {
+  left: 26px;
+}
+
+.toggle-checkbox:focus + .toggle-label {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
+}
+
 /* --- Responsive para Móviles --- */
 @media (max-width: 900px) {
   .perfil-wrapper {
-    padding: 0; /* Ocupa toda la pantalla */
+    padding: 0;
   }
   
   .perfil-card {
@@ -314,10 +396,10 @@ hr {
   }
 
   .perfil-sidebar {
-    flex-basis: auto; /* Ancho automático */
+    flex-basis: auto;
     border-right: none;
-    border-bottom: 1px solid #eee; /* Separador */
-    gap: 24px; /* Menos espacio en móvil */
+    border-bottom: 1px solid #eee;
+    gap: 24px;
   }
 
   .perfil-main-content {
@@ -326,7 +408,18 @@ hr {
   }
   
   .perfil-section-buttons {
-    margin-top: 0; /* Ajustado */
+    margin-top: 0;
     padding-top: 0;
+  }
+
+  .notificacion-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .notificacion-control {
+    margin-left: 0;
+    align-self: flex-start;
   }
 }
