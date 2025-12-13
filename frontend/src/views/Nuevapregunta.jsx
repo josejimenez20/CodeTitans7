@@ -189,7 +189,7 @@ export default function NuevaPregunta() {
               <button
                 type="button"
                 className="btn-cancelar"
-                onClick={() => navigate("/comunidad")}
+                onClick={() => navigate("/ComunidadPreguntas")}
               >
                 Cancelar
               </button>

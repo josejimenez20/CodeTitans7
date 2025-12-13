@@ -20,6 +20,8 @@ import GoogleCallback from "./views/GoogleCallback";
 import ComunidadPreguntas from "./views/ComunidadPreguntas";
 import NuevaPregunta from "./views/Nuevapregunta";
 import DetallePregunta from "./views/DetallePregunta";
+import Notificaciones from "./views/Notificaciones";
+
 
 
 // Nuevas views
@@ -31,6 +33,7 @@ import ResetPassword from "./views/ResetPassword";
 import ConfiguracionPreferencias from "./views/ConfiguracionPreferencias";
 import { AuthContextProvider } from "./contexts/useAuth";
 import { PlantaContextProvider } from "./contexts/usePlanta";
+
 
 // Componente para proteger rutas
 // CORRECCIÓN: Se elimina la verificación del token de localStorage.
@@ -126,6 +129,11 @@ const router = createBrowserRouter([
       {path: "/DetallePregunta/:id", element: (
         <ProtectedRoute>
           <DetallePregunta />
+        </ProtectedRoute>
+      )},
+      {path: "/notificaciones", element: (
+        <ProtectedRoute>
+          <Notificaciones />
         </ProtectedRoute>
       )},
     ],

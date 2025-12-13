@@ -26,6 +26,8 @@ const Navbar = () => {
 
               <li><Link to="/perfil">Mi cuenta</Link></li>
 
+              <li><Link to="/notificaciones">🔔</Link></li>
+
               {/* BOTÓN DE AYUDA */}
               <li>
                 <button
