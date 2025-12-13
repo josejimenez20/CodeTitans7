@@ -77,7 +77,7 @@ export default function NuevaPregunta() {
 
     // Redirigir después de 1 segundo
     setTimeout(() => {
-      navigate("/Comunidad");
+      navigate("/ComunidadPreguntas");
     }, 1500);
   };
 
@@ -189,7 +189,7 @@ export default function NuevaPregunta() {
               <button
                 type="button"
                 className="btn-cancelar"
-                onClick={() => navigate("/ComunidadPreguntas")}
+                onClick={() => navigate("/comunidad")}
               >
                 Cancelar
               </button>

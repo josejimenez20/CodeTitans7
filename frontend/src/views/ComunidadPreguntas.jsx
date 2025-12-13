@@ -88,9 +88,9 @@ export default function ComunidadPreguntas() {
   };
 
   const abrirNuevaPregunta = () => {
-    navigate("/Nuevapregunta");
-  
+    navigate("/NuevaPregunta");
   };
+
 
   return (
     <div className="comunidad-wrapper">
