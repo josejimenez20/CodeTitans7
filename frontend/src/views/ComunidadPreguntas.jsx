@@ -84,8 +84,8 @@ export default function ComunidadPreguntas() {
   };
 
   const irADetalle = (id) => {
-    navigate(`/pregunta/${id}`);
-  };
+    navigate(`/DetallePregunta/${id}`);
+  }
 
   const abrirNuevaPregunta = () => {
     navigate("/NuevaPregunta");

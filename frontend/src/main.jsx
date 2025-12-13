@@ -19,6 +19,7 @@ import LoginStepTwo from "./views/TwoStepLogin";
 import GoogleCallback from "./views/GoogleCallback";
 import ComunidadPreguntas from "./views/ComunidadPreguntas";
 import NuevaPregunta from "./views/Nuevapregunta";
+import DetallePregunta from "./views/DetallePregunta";
 
 
 // Nuevas views
@@ -122,6 +123,11 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {path: "/DetallePregunta/:id", element: (
+        <ProtectedRoute>
+          <DetallePregunta />
+        </ProtectedRoute>
+      )},
     ],
   },
   { path: "/login", element: <Login /> },

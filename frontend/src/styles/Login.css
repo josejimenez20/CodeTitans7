@@ -76,6 +76,9 @@ body {
   transition: all 0.7s ease-in-out;
   border-radius: var(--radius-base);
   font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   z-index: 2;
 }
@@ -118,6 +121,9 @@ body {
   margin-bottom: 2.5rem;
   font-weight: 400;
   max-width: 300px;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
   user-select: text;
 }
 
@@ -133,6 +139,9 @@ body {
   font-weight: 600;
   letter-spacing: 1px;
   box-shadow: 0 0 10px rgba(255 255 255 / 0.3);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
 
@@ -156,6 +165,9 @@ body {
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
   user-select: text;
   z-index: 1;
   border-radius: var(--radius-base);
@@ -189,6 +201,9 @@ body {
 .form-header {
   margin-bottom: 40px;
   text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
 
@@ -210,7 +225,7 @@ body {
 /* Form group spacing */
 .form-group {
   position: relative;
-  margin-bottom: 20px; /* Separación entre campos */
+  margin-bottom: 20px;
 }
 
 /* Inputs y selects con más padding y margen */
@@ -229,6 +244,8 @@ select {
 
 select {
   appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237F5539' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 15px center;
@@ -269,7 +286,6 @@ select {
   letter-spacing: 1.2px;
   box-shadow: 0 8px 20px rgba(83, 133, 101, 0.3);
   transition: background-color 0.35s ease, box-shadow 0.35s ease;
-  /* margin-right: 10px; <-- ESTO CAUSABA EL PROBLEMA */
 }
 
 .btn:hover,
@@ -292,6 +308,9 @@ select {
 .logo {
   width: 100px;
   margin-bottom: 30px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.1));
   transition: transform 0.3s ease;
@@ -338,9 +357,7 @@ select {
   }
 }
 
-/* --- INICIO DE CORRECCIONES --- */
-
-/* 1. Arreglar enlace "¿Olvidaste tu contraseña?" */
+/* Forgot password link */
 .forgot-password-link {
   font-size: 0.9rem;
   color: var(--color-gray);
@@ -354,7 +371,7 @@ select {
   color: var(--color-brown);
 }
 
-/* 2. Arreglar botón de Google (espaciado del ícono) */
+/* Google button */
 .google-btn {
   background: white;
   color: #333;
@@ -362,7 +379,7 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px; /* <-- AÑADE ESPACIO entre el ícono y el texto */
+  gap: 12px;
 }
 
 .google-btn:hover {
@@ -374,19 +391,16 @@ select {
   height: 18px;
 }
 
-/* 3. NUEVO: Contenedor para botones a la par */
+/* Form buttons container */
 .form-buttons-container {
   display: flex;
-  flex-direction: row; /* A la par */
-  gap: 15px; /* Espacio entre los botones */
-  margin-top: 10px; /* Espacio arriba de los botones */
+  flex-direction: row;
+  gap: 15px;
+  margin-top: 10px;
 }
 
-/* 4. Asegurar que los botones dentro del contenedor ocupen el espacio */
 .form-buttons-container .btn {
-  width: 100%; /* Ocupa 50% del espacio (menos el gap) */
-  margin-top: 0; /* Resetea el margen si lo tenía */
-  margin-right: 0; /* Resetea el margen derecho */
+  width: 100%;
+  margin-top: 0;
+  margin-right: 0;
 }
-
-/* --- FIN DE CORRECCIONES --- */

@@ -9,13 +9,13 @@
 }
 
 body {
-  background-color: #F5F5F5;
+  background-color: var(--color-brown);
   color: #333333;
 }
 
 .nueva-pregunta-wrapper {
   min-height: 100vh;
-  background-color: #F5F5F5;
+  background-color: var();
   padding: 40px 20px;
 }
 

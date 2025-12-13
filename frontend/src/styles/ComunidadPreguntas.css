@@ -31,7 +31,7 @@ body {
 .comunidad-titulo {
   font-family: 'Arial', sans-serif;
   font-size: 28px;
-  color: var(--color-brown);
+  color: var();
   margin-bottom: 12px;
   font-weight: 700;
 }
@@ -39,7 +39,7 @@ body {
 .comunidad-subtitulo {
   font-family: 'Arial', sans-serif;
   font-size: 16px;
-  color: var(--color-brown);
+  color: var();
   margin: 0;
 }
 
