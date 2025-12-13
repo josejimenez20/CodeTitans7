@@ -1,22 +1,20 @@
-/* ===========================================
-   ESTILOS NUEVA PREGUNTA
-   =========================================== */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: var(--color-brown);
-  color: #333333;
+:root {
+  --color-light-green: #A3B18A;
+  --color-cream: #F6EEC9;
+  --color-brown: #7F5539;
+  --color-pale-ivory: #FAF3E0;
+  --color-gray: #6C757D;
+  --color-mint: #D4E2C3;
+  --color-off-white: #FAF8EF;
+  --color-light-brown: #A57D5D;
+  --color-white: #FFFCF5;
+  --color-light-gray: #A0A7B0;
 }
 
 .nueva-pregunta-wrapper {
   min-height: 100vh;
-  background-color: var();
-  padding: 40px 20px;
+  background: linear-gradient(135deg, var(--color-white), var(--color-pale-ivory));
+  padding: 2rem 1rem;
 }
 
 .nueva-pregunta-container {
@@ -24,113 +22,110 @@ body {
   margin: 0 auto;
 }
 
-/* Botón Volver */
 .btn-volver {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background-color: #FFFFFF;
-  border: 2px solid #E0E0E0;
+  background: var(--color-white);
+  border: 2px solid var(--color-light-green);
+  color: var(--color-light-green);
+  padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  color: #333333;
   font-family: 'Arial', sans-serif;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-bottom: 24px;
+  margin-bottom: 2rem;
 }
 
 .btn-volver:hover {
-  background-color: #F5F5F5;
-  border-color: #A3B18A;
-  color: #333333;
+  background: var(--color-light-green);
+  color: var(--color-white);
+  transform: translateX(-5px);
 }
 
-/* Tarjeta Principal */
 .nueva-pregunta-card {
-  background-color: #FFFFFF;
+  background: var(--color-white);
   border-radius: 12px;
-  padding: 40px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Título de la Página ("Hacer una Nueva Pregunta") */
 .nueva-pregunta-titulo {
   font-family: 'Arial', sans-serif;
   font-size: 28px;
   color: #333333;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
+  text-align: center;
   font-weight: 700;
 }
 
-/* Formulario */
 .nueva-pregunta-form {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 1.5rem;
 }
 
+/* Form Group */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.5rem;
 }
 
+/* Etiquetas de los Campos ("Título", "Detalle") */
 .form-label {
   font-family: 'Arial', sans-serif;
   font-size: 16px;
-  color: #333333;
-  font-weight: 700;
-  display: flex;
-  gap: 4px;
+  color: #555555;
+  font-weight: 600;
 }
 
+/* Texto dentro de los Campos */
 .form-input,
 .form-textarea {
-  padding: 14px 16px;
-  border: 2px solid #E0E0E0;
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--color-pale-ivory);
   border-radius: 8px;
   font-family: 'Arial', sans-serif;
   font-size: 16px;
   color: #333333;
-  transition: all 0.3s ease;
-  resize: vertical;
-}
-
-.form-input::placeholder,
-.form-textarea::placeholder {
-  color: #999999;
+  background-color: var(--color-off-white);
+  transition: border-color 0.3s ease;
 }
 
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #A3B18A;
-  box-shadow: 0 0 0 3px rgba(163, 177, 138, 0.1);
-  background-color: #FFFEF8;
+  border-color: var(--color-light-green);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 150px;
 }
 
 .form-helper {
   font-family: 'Arial', sans-serif;
-  font-size: 12px;
-  color: #999999;
-  margin: 0;
+  font-size: 14px;
+  color: #757575;
+  text-align: right;
 }
 
-/* Selector de Tags */
+/* Tags Selector */
 .tags-selector {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .tag-btn {
-  padding: 10px 16px;
-  background-color: #F5F5F5;
-  border: 2px solid #E0E0E0;
-  border-radius: 999px;
-  color: #333333;
+  background: var(--color-off-white);
+  border: 2px solid var(--color-pale-ivory);
+  color: #555555;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
   font-family: 'Arial', sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -139,129 +134,117 @@ body {
 }
 
 .tag-btn:hover {
-  background-color: #EBEBEB;
-  border-color: #A3B18A;
+  border-color: var(--color-light-green);
+  background: var(--color-mint);
 }
 
 .tag-btn.active {
-  background-color: #A3B18A;
-  border-color: #7F5539;
-  color: #FFFFFF;
+  background: var(--color-light-green);
+  color: var(--color-white);
+  border-color: var(--color-light-green);
 }
 
 /* Tags Seleccionados */
 .tags-seleccionados {
-  margin-top: 16px;
-  padding: 16px;
-  background-color: #F9F9F9;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--color-pale-ivory);
   border-radius: 8px;
-  border-left: 4px solid #A3B18A;
 }
 
 .tags-label {
   font-family: 'Arial', sans-serif;
   font-size: 14px;
-  color: #333333;
-  font-weight: 700;
-  margin: 0 0 12px 0;
+  color: #555555;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .tags-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .tag-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  background-color: #E3F2FD;
-  color: #0277BD;
-  border-radius: 999px;
+  background: var(--color-light-green);
+  color: var(--color-white);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
   font-family: 'Arial', sans-serif;
   font-size: 14px;
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .tag-remove {
   background: none;
   border: none;
-  color: #0277BD;
-  cursor: pointer;
+  color: var(--color-white);
   font-size: 16px;
+  cursor: pointer;
   padding: 0;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
+  line-height: 1;
+  transition: transform 0.2s ease;
 }
 
 .tag-remove:hover {
-  color: #d32f2f;
   transform: scale(1.2);
 }
 
 /* Botones de Acción */
 .form-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-.btn-submit,
-.btn-cancelar {
-  padding: 14px 28px;
+/* Botón "Publicar Pregunta" */
+.btn-submit {
+  background-color: #4CAF50;
+  color: #FFFFFF;
   border: none;
+  padding: 1rem 2rem;
   border-radius: 8px;
   font-family: 'Arial', sans-serif;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   flex: 1;
 }
 
-.btn-submit {
-  background-color: #4CAF50;
-  color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-}
-
 .btn-submit:hover {
   background-color: #45a049;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
 
-.btn-submit:active {
-  transform: translateY(0);
-}
-
+/* Botón Cancelar */
 .btn-cancelar {
-  background-color: #E0E0E0;
-  color: #333333;
-  border: 2px solid #D0D0D0;
+  background: var(--color-white);
+  color: #555555;
+  border: 2px solid var(--color-pale-ivory);
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
 }
 
 .btn-cancelar:hover {
-  background-color: #D0D0D0;
-  border-color: #B0B0B0;
+  border-color: var(--color-gray);
+  background: var(--color-pale-ivory);
 }
 
-/* --- RESPONSIVE --- */
+/* Responsive */
 @media (max-width: 768px) {
-  .nueva-pregunta-wrapper {
-    padding: 20px 16px;
-  }
-
-  .nueva-pregunta-card {
-    padding: 24px;
-  }
-
   .nueva-pregunta-titulo {
     font-size: 24px;
-    margin-bottom: 20px;
   }
 
   .form-actions {
@@ -270,46 +253,6 @@ body {
 
   .btn-submit,
   .btn-cancelar {
-    flex: 1;
     width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .nueva-pregunta-wrapper {
-    padding: 16px 12px;
-  }
-
-  .nueva-pregunta-card {
-    padding: 16px;
-  }
-
-  .nueva-pregunta-titulo {
-    font-size: 20px;
-  }
-
-  .form-label {
-    font-size: 14px;
-  }
-
-  .form-input,
-  .form-textarea {
-    font-size: 14px;
-    padding: 12px 14px;
-  }
-
-  .tag-btn {
-    font-size: 13px;
-    padding: 8px 12px;
-  }
-
-  .tags-selector {
-    gap: 8px;
-  }
-
-  .btn-submit,
-  .btn-cancelar {
-    padding: 12px 20px;
-    font-size: 14px;
   }
 }
