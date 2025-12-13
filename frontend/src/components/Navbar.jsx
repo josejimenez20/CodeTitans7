@@ -18,17 +18,13 @@ const Navbar = () => {
 
           <nav>
             <ul>
-              <li>
-                <Link to="/inicio">Inicio</Link>
-              </li>
+              <li><Link to="/inicio">Inicio</Link> </li>
 
-              <li>
-                <Link to="/favoritos">Plantas Favoritas</Link>
-              </li>
+              <li><Link to="/favoritos">Plantas Favoritas</Link> </li>
 
-              <li>
-                <Link to="/perfil">Mi cuenta</Link>
-              </li>
+              <li><Link to="/ComunidadPreguntas">Comunidad</Link> </li>
+
+              <li><Link to="/perfil">Mi cuenta</Link></li>
 
               {/* BOTÓN DE AYUDA */}
               <li>

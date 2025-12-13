@@ -222,6 +222,7 @@ export default function Resultados() {
                     {
                       isFavorito(planta._id) ? <HeartFilledIcon size={32} /> : <HeartIcon size={32} />
                     }
+                    
                 </button>
                 <div className="likes-wrapper">
                   <button
@@ -237,6 +238,25 @@ export default function Resultados() {
           ))}
         </div>
       </main>
+        <button
+        className="boton-flotante-comunidad"
+        onClick={() => navigate("/comunidad")}
+        title="Ir a Preguntas de la Comunidad"
+        aria-label="Acceder a la Comunidad de Preguntas"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+      </button>
     </>
   );
 }

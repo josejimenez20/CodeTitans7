@@ -17,6 +17,8 @@ import Favoritos from "./views/Favoritos";
 import Login from "./views/Login";
 import LoginStepTwo from "./views/TwoStepLogin";
 import GoogleCallback from "./views/GoogleCallback";
+import ComunidadPreguntas from "./views/ComunidadPreguntas";
+
 
 // Nuevas views
 import Dashboard from "./views/Dashboard";
@@ -103,6 +105,14 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "/ComunidadPreguntas",
+        element: (
+          <ProtectedRoute>
+            <ComunidadPreguntas />
+          </ProtectedRoute>
+        ),
+      },  
     ],
   },
   { path: "/login", element: <Login /> },
