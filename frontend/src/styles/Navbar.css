@@ -252,3 +252,58 @@ nav li button:hover {
   font-style:italic;
   text-align:center;
 }
+
+/* Estilos para el item de notificaciones en el navbar */
+.notificaciones-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+/* Ajuste del botón de ayuda para que esté alineado */
+.help-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.help-btn:hover {
+  transform: scale(1.1);
+}
+
+.help-btn svg {
+  display: block;
+}
+/* Estilos para el item de notificaciones en el navbar */
+.notificaciones-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+/* Ajuste del botón de ayuda para que esté alineado */
+.help-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.help-btn:hover {
+  transform: scale(1.1);
+}
+
+.help-btn svg {
+  display: block;
+}
