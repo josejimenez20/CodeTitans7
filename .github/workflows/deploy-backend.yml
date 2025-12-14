@@ -1,0 +1,65 @@
+name: Deploy - Backend
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'backend/**' # Solo se ejecuta si cambias algo en el backend
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Setup Docker
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Login DigitalOcean
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_API_TOKEN }}
+      
+      - name: Login to DOCR
+        run: doctl registry login --expiry-seconds 1200
+
+      # Build & Push
+      - name: Build & push image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.REGISTRY_NAME }}/${{ secrets.IMAGE_NAME_BACKEND }}:latest
+            ${{ secrets.REGISTRY_NAME }}/${{ secrets.IMAGE_NAME_BACKEND }}:${{ github.sha }}
+
+      # Deploy via SSH
+      - name: Deploy to droplet
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.DROPLET_IP_BACKEND }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            # Parar el contenedor anterior si existe
+            docker stop codetitans_backend || true
+            docker rm codetitans_backend || true
+            
+            # Login en el servidor
+            echo "${{ secrets.DO_API_TOKEN }}" | docker login -u docker --password-stdin registry.digitalocean.com
+            
+            # Descargar nueva imagen
+            docker pull ${{ secrets.REGISTRY_NAME }}/${{ secrets.IMAGE_NAME_BACKEND }}:latest
+            
+            # Levantar servicio
+            cd /home/${{ secrets.DEPLOY_USER }}/apps/backend
+            docker compose up -d --remove-orphans
+            
+            # Limpieza
+            docker image prune -af
