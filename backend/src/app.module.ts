@@ -15,6 +15,8 @@ import { MunicipioModule } from './municipio/municipio.module';
 import { PlantasModule } from './plantas/plantas.module';
 import { FavoritasModule } from './favoritas/favoritas.module';
 import { ProgresoModule } from './progreso/progreso.module';
+// 1. IMPORTAMOS EL NUEVO MÓDULO AQUÍ
+import { LikesModule } from './likes/likes.module'; 
 
 @Module({
   imports: [
@@ -32,9 +34,10 @@ import { ProgresoModule } from './progreso/progreso.module';
     MailModule,
     MunicipioModule,
     PlantasModule,
-    AuthModule,
     FavoritasModule,
     ProgresoModule,
+    // 2. LO AGREGAMOS AL ARRAY DE IMPORTS
+    LikesModule, 
   ],
   controllers: [AppController, DmsController],
   providers: [AppService, DmsService, RolesGuard],
