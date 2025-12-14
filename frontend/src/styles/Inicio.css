@@ -53,6 +53,7 @@ body {
 
 .btn-primary {
   background-color: var(--color-light-green);
+  
   color: white;
   border: none;
   border-radius: 10px;
@@ -63,7 +64,7 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: var(--color-mint);
+  background-color: var(--color-brown);
   color: var(--color-brown);
   transform: scale(1.05);
 }
@@ -71,7 +72,7 @@ body {
 .btn-secondary {
   background-color: transparent;
   color: var(--color-brown);
-  border: 2px solid var(--color-light-green);
+  border: 2px solid var(--color-brown);
   border-radius: 10px;
   padding: 10px 22px;
   font-weight: 600;
