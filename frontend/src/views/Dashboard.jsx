@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/dashboard.css"; // CSS adaptado
+import "../styles/Dashboard.css";
 
 export default function Dashboard({ userName }) {
   const redirectToStart = () => {
