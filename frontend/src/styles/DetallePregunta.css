@@ -1,248 +1,606 @@
-:root {
-  --color-light-green: #A3B18A;
-  --color-cream: #F6EEC9;
-  --color-brown: #7F5539;
-  --color-pale-ivory: #FAF3E0;
-  --color-gray: #6C757D;
-  --color-mint: #D4E2C3;
-  --color-off-white: #FAF8EF;
-  --color-light-brown: #A57D5D;
-  --color-white: #FFFCF5;
-  --color-light-gray: #A0A7B0;
-}
-.detalle-wrapper {
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--color-white), var());
-  padding: 2rem 1rem;
-}
-
-.detalle-container {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.btn-volver {
-  background: var(--color-white);
-  border: 2px solid var(--color-light-green);
-  color: var(--color-light-green);
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 2rem;
-}
-
-.btn-volver:hover {
-  background: var(--color-light-green);
-  color: var(--color-white);
-  transform: translateX(-5px);
-}
-
-/* Pregunta Principal */
-.pregunta-detalle {
-  background: var(--color-white);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-}
-
-.pregunta-header {
-  margin-bottom: 1.5rem;
-}
-
-.pregunta-titulo-detalle {
-  font-size: 2rem;
-  color: var(--color-brown);
-  margin-bottom: 1rem;
-  line-height: 1.3;
-}
-
-.pregunta-meta {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  color: var(--color-gray);
-  font-size: 0.9rem;
-}
-
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.pregunta-tags-detalle {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
-}
-
-.tag-detalle {
-  background: var(--color-mint);
-  color: var(--color-brown);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.pregunta-descripcion {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: var(--color-brown);
-  padding-top: 1.5rem;
-  border-top: 2px solid var(--color-pale-ivory);
-}
-
-/* Respuestas */
-.respuestas-section {
-  margin-bottom: 2rem;
-}
-
-.respuestas-titulo {
-  font-size: 1.5rem;
-  color: var(--color-brown);
-  margin-bottom: 1.5rem;
-}
-
-.respuestas-lista {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.respuesta-card {
-  background: var(--color-white);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  gap: 1.5rem;
-}
-
-.respuesta-votos {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.voto-btn {
-  background: none;
+/* ========== BOTÓN ELIMINAR ========== */
+.btn-eliminar {
+  background: transparent;
   border: none;
-  font-size: 1.5rem;
-  color: var(--color-light-gray);
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #e71d1d;
   cursor: pointer;
+  padding: 0.25rem 0.5rem;
   transition: color 0.3s ease;
-  padding: 0.25rem;
 }
 
-.voto-btn:hover {
-  color: var(--color-light-green);
+.btn-eliminar:hover {
+  color: #ffffff;
+  text-decoration: underline;
 }
 
-.votos-count {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--color-brown);
-}
-
-.respuesta-contenido {
-  flex: 1;
-}
-
-.respuesta-texto {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--color-brown);
-  margin-bottom: 1rem;
-}
-
-.respuesta-meta {
+/* ========== MODAL DE CONFIRMACIÓN DE ELIMINACIÓN ========== */
+.modal-eliminar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
-  gap: 1rem;
-  font-size: 0.9rem;
-  color: var(--color-gray);
-}
-
-.respuesta-autor {
-  font-weight: 600;
-  color: var(--color-light-green);
-}
-
-/* Nueva Respuesta */
-.nueva-respuesta-section {
-  background: var(--color-white);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.nueva-respuesta-titulo {
-  font-size: 1.3rem;
-  color: var(--color-brown);
-  margin-bottom: 1rem;
-}
-
-.nueva-respuesta-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.respuesta-textarea {
-  width: 100%;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
   padding: 1rem;
-  border: 2px solid var(--color-pale-ivory);
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: inherit;
-  resize: vertical;
-  transition: border-color 0.3s ease;
-  background-color: var(--color-off-white);
-  color: var(--color-brown);
 }
 
-.respuesta-textarea:focus {
-  outline: none;
-  border-color: var(--color-light-green);
+.modal-eliminar-contenido {
+  background: #FFFFFF;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 450px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.btn-enviar-respuesta {
-  background: var(--color-light-green);
-  color: var(--color-white);
+.modal-eliminar-pregunta {
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  color: #333333;
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+}
+
+.modal-eliminar-advertencia {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #757575;
+  margin: 0 0 2rem 0;
+}
+
+.modal-eliminar-acciones {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Botón "Sí, eliminar" */
+.btn-confirmar-eliminar {
+  background-color: #eb8a8a;
+  color: #FFFFFF;
   border: none;
-  padding: 1rem 2rem;
+  padding: 0.875rem 2rem;
   border-radius: 8px;
-  font-size: 1rem;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  align-self: flex-start;
 }
 
-.btn-enviar-respuesta:hover {
-  background: var(--color-brown);
+.btn-confirmar-eliminar:hover {
+  background-color: #B71C1C;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(127, 85, 57, 0.3);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
+}
+
+/* Botón "Cancelar" */
+.btn-cancelar-eliminar {
+  background-color: #F0F0F0;
+  color: #333333;
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancelar-eliminar:hover {
+  background-color: #E0E0E0;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .pregunta-titulo-detalle {
-    font-size: 1.5rem;
-  }
-
-  .respuesta-card {
+  .modal-eliminar-acciones {
     flex-direction: column;
-    gap: 1rem;
   }
 
-  .respuesta-votos {
-    flex-direction: row;
+  .btn-confirmar-eliminar,
+  .btn-cancelar-eliminar {
+    width: 100%;
   }
 }
+/* ========== BOTÓN EDITAR ========== */
+.btn-editar {
+  background: transparent;
+  border: none;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #0277BD;
+  background-color: var(--color-light-green);
+  cursor: pointer;
+  padding: 0.5rem 0.5rem;
+  transition: color  0.3s ease;
+}
+
+.btn-editar:hover {
+  color: #01579B;
+  text-decoration: underline;
+  background-color: #F0F8FF;
+}
+
+/* ========== FORMULARIO DE EDICIÓN ========== */
+.edicion-form {
+  margin-top: 1rem;
+}
+
+.edicion-textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #0277BD;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  color: #333333;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+  background-color: #F0F8FF;
+}
+
+.edicion-textarea:focus {
+  outline: none;
+  border-color: #01579B;
+}
+
+.edicion-acciones {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+/* Botón "Guardar Cambios" */
+.btn-guardar-cambios {
+  background-color: #4CAF50;
+  color: #FFFFFF;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-guardar-cambios:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-cancelar-edicion {
+  background: transparent;
+  color: #555555;
+  border: 2px solid #E0E0E0;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancelar-edicion:hover {
+  border-color: #999999;
+  background: #F5F5F5;
+}
+
+/* ========== ETIQUETA "(Editado)" ========== */
+.etiqueta-editado {
+  font-family: 'Arial', sans-serif;
+  font-size: 12px;
+  color: #9E9E9E;
+  font-style: italic;
+}
+/* ========== BOTÓN REPORTAR ========== */
+.btn-reportar {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: #757575;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.btn-reportar:hover {
+  color: #E74C3C;
+  transform: scale(1.1);
+}
+
+/* Modal de Reporte */
+.modal-reporte-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.849);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+}
+
+.modal-reporte-contenido {
+  background: #FFFFFF;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 8px 32px rgb(255, 255, 255);
+}
+
+.modal-reporte-cerrar {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #757575;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.modal-reporte-cerrar:hover {
+  color: #333333;
+}
+
+.modal-reporte-titulo {
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  color: #333333;
+  margin: 0 0 1.5rem 0;
+  font-weight: 700;
+  text-align: center;
+}
+
+.modal-reporte-opciones {
+  margin-bottom: 1.5rem;
+}
+
+.modal-reporte-instruccion {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #555555;
+  margin-bottom: 1rem;
+}
+
+.opcion-reporte {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.opcion-reporte:hover {
+  background-color: #F5F5F5;
+}
+
+.opcion-reporte input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 0.75rem;
+  cursor: pointer;
+  accent-color: #4CAF50;
+}
+
+.opcion-texto {
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  color: #555555;
+  cursor: pointer;
+  flex: 1;
+}
+
+.modal-reporte-acciones {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btn-enviar-reporte {
+  flex: 1;
+  background-color: #4CAF50;
+  color: #FFFFFF;
+  border: none;
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-enviar-reporte:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-cancelar-reporte {
+  flex: 1;
+  background: transparent;
+  color: #555555;
+  border: 2px solid #E0E0E0;
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancelar-reporte:hover {
+  border-color: #999999;
+  background: #F5F5F5;
+}
+/* ========== BOTÓN MARCAR COMO ÚTIL ========== */
+.btn-util {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 2px solid #E0E0E0;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-util:hover {
+  border-color: #4CAF50;
+  background: #F5F5F5;
+}
+
+/* Ícono - Estado Inactivo */
+.icono-util {
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  color: #757575;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+/* Contador - Estado Inactivo */
+.contador-util {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #555555;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+/* Estado Activo (VERDE) */
+.btn-util.activo {
+  border-color: #4CAF50 !important;
+  background: #E8F5E9 !important;
+}
+
+.btn-util.activo .icono-util {
+  color: #4CAF50 !important;
+}
+
+.btn-util.activo .contador-util {
+  color: #4CAF50 !important;
+}
+
+/* Efecto al hacer clic */
+.btn-util:active {
+  transform: scale(0.95);
+}
+/* ========== ACCIONES DE RESPUESTA (ACTUALIZADO) ========== */
+.respuesta-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #F0F0F0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.respuesta-acciones {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* ========== BOTÓN AÑADIR COMENTARIO ========== */
+.btn-comentar {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #0277BD;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-comentar:hover {
+  color: #01579B;
+  text-decoration: underline;
+}
+
+/* ========== FORMULARIO DE COMENTARIO ========== */
+.comentario-form {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #F5F5F5;
+  border-radius: 8px;
+  border-left: 3px solid #0277BD;
+}
+
+/* Caja de Texto */
+.comentario-textarea {
+  width: 100%;
+  height: 60px;
+  padding: 0.75rem;
+  border: 2px solid #E0E0E0;
+  border-radius: 6px;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #333333;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+.comentario-textarea:focus {
+  outline: none;
+  border-color: #0277BD;
+  background: #FFFFFF;
+}
+
+.comentario-textarea::placeholder {
+  color: #999999;
+}
+
+/* Acciones del formulario */
+.comentario-form-acciones {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+/* Botón Publicar Comentario */
+.btn-publicar-comentario {
+  background-color: #4CAF50;
+  color: #FFFFFF;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-publicar-comentario:hover {
+  background-color: #45a049;
+  transform: translateY(-1px);
+}
+
+/* Botón Cancelar */
+.btn-cancelar-comentario {
+  background: transparent;
+  color: #757575;
+  border: 2px solid #E0E0E0;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancelar-comentario:hover {
+  border-color: #999999;
+  color: #555555;
+}
+
+/* ========== LISTA DE COMENTARIOS ========== */
+.comentarios-lista {
+  margin-top: 1rem;
+  margin-left: 2rem;
+  padding-left: 1rem;
+  border-left: 3px solid #E0E0E0;
+}
+
+.comentario-item {
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  background: #FAFAFA;
+  border-radius: 6px;
+}
+
+.comentario-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Meta del comentario (autor y fecha) */
+.comentario-meta {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Arial', sans-serif;
+  font-size: 12px;
+  color: #757575;
+}
+
+.comentario-autor {
+  font-weight: 600;
+  color: #0277BD;
+}
+
+.comentario-fecha {
+  color: #757575;
+}
+
+/* Texto del comentario */
+.comentario-texto {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #555555;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .respuesta-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .respuesta-acciones {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .comentarios-lista {
+    margin-left: 1rem;
+  }
+
+  .comentario-form-acciones {
+    flex-direction: column;
+  }
+
+  .btn-publicar-comentario,
+  .btn-cancelar-comentario {
+    width: 100%;
+  }
+  
+
+  }

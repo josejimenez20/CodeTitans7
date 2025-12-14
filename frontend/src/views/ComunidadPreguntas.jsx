@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PaginaGaleria from "./PaginaGaleria";
 import "../styles/ComunidadPreguntas.css";
 
 export default function ComunidadPreguntas() {
   const navigate = useNavigate();
+  const [vistaActual, setVistaActual] = useState("preguntas"); // "preguntas" o "galeria"
+  
   const [preguntas, setPreguntas] = useState([
     {
       id: 1,
@@ -91,108 +94,134 @@ export default function ComunidadPreguntas() {
     navigate("/NuevaPregunta");
   };
 
-
   return (
     <div className="comunidad-wrapper">
       <div className="comunidad-header">
-        <h1 className="comunidad-titulo">Preguntas de la Comunidad</h1>
+        {/* TÍTULO DINÁMICO según la pestaña activa */}
+        <h1 className="comunidad-titulo">
+          {vistaActual === "preguntas" ? "Preguntas de la Comunidad" : "Galería de la Comunidad"}
+        </h1>
         <p className="comunidad-subtitulo">
-          Comparte tus dudas sobre plantas y aprende de otros jardineros
+          {vistaActual === "preguntas" 
+            ? "Comparte tus dudas sobre plantas y aprende de otros jardineros"
+            : "Descubre y comparte el progreso de tus plantas"
+          }
         </p>
-      </div>
 
-      <div className="comunidad-container">
-        {/* Sidebar de Filtros */}
-        <aside className="comunidad-sidebar">
-          <div className="filtro-section">
-            <h3 className="filtro-titulo">Filtrar por tema</h3>
-            <div className="filtro-tags">
-              <button
-                className={`filtro-tag ${!filtroTag ? "active" : ""}`}
-                onClick={() => setFiltroTag(null)}
-              >
-                Todos
-              </button>
-              {obtenerTags().map((tag) => (
-                <button
-                  key={tag}
-                  className={`filtro-tag ${filtroTag === tag ? "active" : ""}`}
-                  onClick={() => setFiltroTag(tag)}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </div>
-
+        {/* PESTAÑAS */}
+        <div className="comunidad-tabs">
           <button
-            className="btn-nueva-pregunta"
-            onClick={abrirNuevaPregunta}
+            className={`tab-btn ${vistaActual === "preguntas" ? "active" : ""}`}
+            onClick={() => setVistaActual("preguntas")}
           >
-            + Hacer una nueva pregunta
+            💬 Preguntas
           </button>
-        </aside>
-
-        {/* Área Principal */}
-        <main className="comunidad-main">
-          {/* Barra de Búsqueda */}
-          <div className="comunidad-search">
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Buscar preguntas..."
-              value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
-            />
-          </div>
-
-          {/* Lista de Preguntas */}
-          <div className="preguntas-list">
-            {preguntasFiltradas.length > 0 ? (
-              preguntasFiltradas.map((pregunta) => (
-                <article
-                  key={pregunta.id}
-                  className="pregunta-card"
-                  onClick={() => irADetalle(pregunta.id)}
-                >
-                  <div className="pregunta-contenido">
-                    <h2 className="pregunta-titulo">{pregunta.titulo}</h2>
-                    <p className="pregunta-extracto">{pregunta.extracto}</p>
-
-                    <div className="pregunta-tags">
-                      {pregunta.tags.map((tag) => (
-                        <span key={tag} className="pregunta-tag">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="pregunta-metadata">
-                    <div className="pregunta-info">
-                      <span className="info-item">
-                        <strong>{pregunta.respuestas}</strong> respuestas
-                      </span>
-                      <span className="info-item">
-                        <strong>{pregunta.vistas}</strong> vistas
-                      </span>
-                    </div>
-
-                    <div className="pregunta-autor">
-                      <p className="autor-nombre">{pregunta.autor}</p>
-                      <p className="autor-fecha">{pregunta.fecha}</p>
-                    </div>
-                  </div>
-                </article>
-              ))
-            ) : (
-              <div className="no-resultados">
-                <p>No se encontraron preguntas que coincidan con tu búsqueda.</p>
-              </div>
-            )}
-          </div>
-        </main>
+          <button
+            className={`tab-btn ${vistaActual === "galeria" ? "active" : ""}`}
+            onClick={() => setVistaActual("galeria")}
+          >
+            📷 Galería
+          </button>
+        </div>
       </div>
+
+      {/* CONTENIDO SEGÚN PESTAÑA */}
+      {vistaActual === "preguntas" ? (
+        <div className="comunidad-container">
+          {/* Sidebar de Filtros */}
+          <aside className="comunidad-sidebar">
+            <div className="filtro-section">
+              <h3 className="filtro-titulo">Filtrar por tema</h3>
+              <div className="filtro-tags">
+                <button
+                  className={`filtro-tag ${!filtroTag ? "active" : ""}`}
+                  onClick={() => setFiltroTag(null)}
+                >
+                  Todos
+                </button>
+                {obtenerTags().map((tag) => (
+                  <button
+                    key={tag}
+                    className={`filtro-tag ${filtroTag === tag ? "active" : ""}`}
+                    onClick={() => setFiltroTag(tag)}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button
+              className="btn-nueva-pregunta"
+              onClick={abrirNuevaPregunta}
+            >
+              + Hacer una nueva pregunta
+            </button>
+          </aside>
+
+          {/* Área Principal */}
+          <main className="comunidad-main">
+            {/* Barra de Búsqueda */}
+            <div className="comunidad-search">
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Buscar preguntas..."
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
+            </div>
+
+            {/* Lista de Preguntas */}
+            <div className="preguntas-list">
+              {preguntasFiltradas.length > 0 ? (
+                preguntasFiltradas.map((pregunta) => (
+                  <article
+                    key={pregunta.id}
+                    className="pregunta-card"
+                    onClick={() => irADetalle(pregunta.id)}
+                  >
+                    <div className="pregunta-contenido">
+                      <h2 className="pregunta-titulo">{pregunta.titulo}</h2>
+                      <p className="pregunta-extracto">{pregunta.extracto}</p>
+
+                      <div className="pregunta-tags">
+                        {pregunta.tags.map((tag) => (
+                          <span key={tag} className="pregunta-tag">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="pregunta-metadata">
+                      <div className="pregunta-info">
+                        <span className="info-item">
+                          <strong>{pregunta.respuestas}</strong> respuestas
+                        </span>
+                        <span className="info-item">
+                          <strong>{pregunta.vistas}</strong> vistas
+                        </span>
+                      </div>
+
+                      <div className="pregunta-autor">
+                        <p className="autor-nombre">{pregunta.autor}</p>
+                        <p className="autor-fecha">{pregunta.fecha}</p>
+                      </div>
+                    </div>
+                  </article>
+                ))
+              ) : (
+                <div className="no-resultados">
+                  <p>No se encontraron preguntas que coincidan con tu búsqueda.</p>
+                </div>
+              )}
+            </div>
+          </main>
+        </div>
+      ) : (
+        <PaginaGaleria />
+      )}
     </div>
   );
 }

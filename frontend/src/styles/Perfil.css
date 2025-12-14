@@ -9,16 +9,16 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f8f5f2; /* Color de fondo general */
+  background-color: #f8f5f2;
   padding: 40px 20px; 
   box-sizing: border-box;
-  font-family: Arial, sans-serif; /* Fuente base */
+  font-family: 'Arial', sans-serif;
 }
 
 /* --- Tarjeta Principal --- */
 .perfil-card {
   width: 100%;
-  max-width: 1200px; /* Ancho profesional */
+  max-width: 1200px;
   background-color: #fff;
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
@@ -37,31 +37,28 @@
 
 /* --- Columna Izquierda (Sidebar) --- */
 .perfil-sidebar {
-  flex: 0 0 320px; /* Ancho fijo de 320px */
-  background-color: #fafaf8; /* Un fondo ligeramente distinto */
+  flex: 0 0 320px;
+  background-color: #fafaf8;
   padding: 32px;
   border-right: 1px solid #eee;
   display: flex;
   flex-direction: column;
-  /* Espacio entre los bloques de la sidebar */
   gap: 32px; 
 }
 
 .perfil-header {
   text-align: center;
-  /* ¡CORRECCIÓN! Eliminamos flex-grow de aquí */
 }
 
 /* --- Columna Derecha (Contenido) --- */
 .perfil-main-content {
-  flex: 1; /* Ocupa todo el espacio restante */
+  flex: 1;
   padding: 32px 40px;
   overflow-y: auto; 
-  max-height: 90vh; /* Altura máxima para permitir scroll */
+  max-height: 90vh;
 }
 
-
-/* --- Estilos de Componentes (Ajustados) --- */
+/* --- Estilos de Componentes --- */
 
 .profile-image-container {
   position: relative;
@@ -95,15 +92,18 @@
   opacity: 0;
   transition: opacity 0.3s ease;
   cursor: pointer;
+  font-family: 'Arial', sans-serif;
   font-size: 16px;
   font-weight: 600;
 }
+
 .profile-image-container:hover .image-overlay {
   opacity: 1;
 }
 
 .perfil-card h2 {
-  font-size: 24px; /* Ajustado */
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
   color: #5c4033;
   margin-bottom: 4px;
   font-weight: 700;
@@ -118,9 +118,10 @@
 }
 
 .email {
+  font-family: 'Arial', sans-serif;
   color: #7f5539;
-  margin-bottom: 0; /* Quitamos margen inferior */
-  font-size: 16px; /* Ajustado */
+  margin-bottom: 0;
+  font-size: 16px;
   opacity: 0.8;
   word-break: break-all;
   text-align: center;
@@ -144,18 +145,20 @@
 }
 
 .formulario label {
-  font-size: 16px; /* Ajustado */
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
   font-weight: 600;
-  color: #5c4033;
+  color: #555555;
   margin-bottom: -8px; 
 }
 
 /* Títulos en la columna principal */
 .perfil-main-content .formulario h3,
 .perfil-main-content .perfil-section > h3 {
+  font-family: 'Arial', sans-serif;
   font-size: 24px;
   margin: 0 0 20px 0;
-  color: #5c4033;
+  color: #333333;
   font-weight: 700;
   border-bottom: 1px solid #eee;
   padding-bottom: 12px;
@@ -163,55 +166,60 @@
 
 /* Título de sección en Sidebar */
 .sidebar-title {
-  font-size: 20px; /* Ajustado */
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
   margin: 0 0 16px 0;
-  color: #5c4033;
+  color: #333333;
   font-weight: 700;
 }
 
 .location-text {
-  font-size: 16px; /* Ajustado */
-  color: #333; 
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  color: #333333; 
   margin: 0;
   line-height: 1.4;
 }
 
+/* Inputs */
 input[type="email"],
 input[type="password"],
 input[type="text"] {
   padding: 12px 14px;
   border: 1px solid #ddd; 
   border-radius: 8px; 
+  font-family: 'Arial', sans-serif;
   font-size: 16px;
+  color: #333333;
   background-color: #fdfdfd;
   transition: all 0.25s ease;
-  font-family: Arial, sans-serif;
-  color: #333;
 }
 
 input:focus {
-  border-color: #a3b18a;
+  border-color: #A3B18A;
   outline: none;
   box-shadow: 0 0 0 3px rgba(163, 177, 138, 0.2);
   background-color: #fff;
 }
 
-/* --- Botones (Nuevos estilos base) --- */
+/* --- Botones --- */
 button {
   padding: 12px 16px;
   border: none;
   border-radius: 8px;
+  font-family: 'Arial', sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: Arial, sans-serif;
   text-align: center;
 }
+
 button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
+
 button:disabled,
 button:disabled:hover {
   background-color: #ccc;
@@ -221,14 +229,15 @@ button:disabled:hover {
   box-shadow: none;
 }
 
-/* Botón Primario (Verde Claro) */
+/* Botón Primario */
 button.btn-primary {
-  background-color: #A3B18A; /* Verde claro */
-  color: #fff;
+  background-color: #4CAF50;
+  color: #FFFFFF;
   margin-top: 8px; 
 }
+
 button.btn-primary:hover {
-  background-color: #8a9a73; /* Verde más oscuro */
+  background-color: #45a049;
 }
 
 /* Botones de acción en Sidebar */
@@ -241,19 +250,21 @@ button.btn-primary:hover {
 }
 
 .btn-danger {
-  background-color: #e76f51;
-  color: #fff;
+  background-color: #DC3545;
+  color: #FFFFFF;
   margin-top: 0;
 }
+
 .btn-danger:hover {
-  background-color: #c74b2c;
+  background-color: #C82333;
 }
 
 .btn-logout {
-  background-color: #6C757D; /* Un gris neutral */
-  color: #fff;
+  background-color: #6C757D;
+  color: #FFFFFF;
   margin-top: 0;
 }
+
 .btn-logout:hover {
   background-color: #5a6268;
 }
@@ -278,9 +289,10 @@ hr {
 }
 
 .progreso-gallery-title {
+  font-family: 'Arial', sans-serif;
   font-size: 18px;
   font-weight: 600;
-  color: #5c4033;
+  color: #333333;
   margin-top: 30px;
   margin-bottom: 16px;
   padding-bottom: 8px;

@@ -21,6 +21,8 @@ import ComunidadPreguntas from "./views/ComunidadPreguntas";
 import NuevaPregunta from "./views/Nuevapregunta";
 import DetallePregunta from "./views/DetallePregunta";
 import Notificaciones from "./views/Notificaciones";
+import PaginaGaleria from "./views/PaginaGaleria";
+
 
 
 
@@ -136,6 +138,12 @@ const router = createBrowserRouter([
           <Notificaciones />
         </ProtectedRoute>
       )},
+      {path: "/PaginaGaleria", element: (
+        <ProtectedRoute>
+          <PaginaGaleria />
+        </ProtectedRoute>
+      )},
+      
     ],
   },
   { path: "/login", element: <Login /> },

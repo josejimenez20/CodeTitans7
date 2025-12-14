@@ -8,6 +8,14 @@
   box-sizing: border-box;
 }
 
+.comunidad-seccion-titulo {
+  font-family: 'Arial', sans-serif;
+  font-size: 32px;
+  color: #333333;
+  margin: 20px 0;
+  font-weight: 700;
+}
+
 body {
   background-color: #F5F5F5;
   color: #333333;
@@ -16,11 +24,11 @@ body {
 /* --- HEADER --- */
 .comunidad-wrapper {
   min-height: 100vh;
-  background-color: #faf1e8;
+  background-color: var();
 }
 
 .comunidad-header {
-  background: var(--color-cream);
+  background: var();
   border-bottom: 2px solid var(--color-light-green);
   color: white;
   padding: 40px 20px;
@@ -415,6 +423,50 @@ body {
   }
 
   .btn-nueva-pregunta {
+    width: 100%;
+  }
+}
+/* ========== PESTAÑAS ========== */
+.comunidad-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.tab-btn {
+  background: #FFFFFF;
+  border: 2px solid #E0E0E0;
+  color: #414141;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  border-color:var(--color-light-green);
+  background: #F5F5F5;
+}
+
+.tab-btn.active {
+  background: #8d9e6e;
+  color: #FFFFFF;
+  border-color: #7F5539;
+}
+
+/* Responsive para tabs */
+@media (max-width: 480px) {
+
+  .comunidad-tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tab-btn {
     width: 100%;
   }
 }
