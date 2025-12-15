@@ -22,6 +22,7 @@ import NuevaPregunta from "./views/Nuevapregunta";
 import DetallePregunta from "./views/DetallePregunta";
 import Notificaciones from "./views/Notificaciones";
 import PaginaGaleria from "./views/PaginaGaleria";
+import ChatFlotante from "./views/ChatFlotante";  
 
 
 
@@ -141,6 +142,11 @@ const router = createBrowserRouter([
       {path: "/PaginaGaleria", element: (
         <ProtectedRoute>
           <PaginaGaleria />
+        </ProtectedRoute>
+      )},
+      {path: "/ChatFlotante", element: (
+        <ProtectedRoute>
+          <ChatFlotante />
         </ProtectedRoute>
       )},
       
