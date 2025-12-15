@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import "../styles/NuevaPregunta.css";
+import "../styles/Nuevapregunta.css";
 
 export default function NuevaPregunta() {
   const navigate = useNavigate();

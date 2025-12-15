@@ -1,0 +1,63 @@
+name: Deploy - Frontend
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'frontend/**' # IMPORTANTE: Solo se ejecuta si tocas la carpeta frontend
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Configuración de Docker
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Conexión con DigitalOcean
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_API_TOKEN }}
+      
+      - name: Login to DOCR
+        run: doctl registry login --expiry-seconds 1200
+
+      # Construcción y Subida 
+      - name: Build & push image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend             
+          file: ./frontend/Dockerfile      # <--- Indicamos dónde está el Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.REGISTRY_NAME }}/${{ secrets.IMAGE_NAME_FRONTEND }}:latest
+            ${{ secrets.REGISTRY_NAME }}/${{ secrets.IMAGE_NAME_FRONTEND }}:${{ github.sha }}
+
+      # Despliegue en el Servidor
+      - name: Deploy via SSH to droplet
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.DROPLET_IP_FRONTEND }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            # Parar el contenedor anterior
+            docker stop frontend || true
+            docker rm frontend || true
+            
+            # Login y Descarga
+            echo "${{ secrets.DO_API_TOKEN }}" | docker login -u docker --password-stdin registry.digitalocean.com
+            docker pull ${{ secrets.REGISTRY_NAME }}/${{ secrets.IMAGE_NAME_FRONTEND }}:latest
+            
+            # Levantar servicio
+            cd /home/${{ secrets.DEPLOY_USER }}/apps/frontend
+            docker compose up -d --remove-orphans
+            
+            # Limpieza
+            docker image prune -af

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
-import "../styles/configuracionPreferencias.css";
+import "../styles/ConfiguracionPreferencias.css";
 
 export default function ConfiguracionPreferencias() {
   const navigate = useNavigate();
